@@ -39,7 +39,11 @@ namespace RustErrorsFix
                 .Replace("FileStorage.server.RemoveExact(UInt64.", "FileStorage.server.RemoveExact(UInt32.")
                 .Replace("FileStorage.server.RemoveExact(ulong.", "FileStorage.server.RemoveExact(uint.")
                 .Replace("CommunityEntity.ServerInstance.net.ID.Value", "CommunityEntity.ServerInstance.net.ID")
+                .Replace(".uid", ".uid.Value")
+                .Replace(".uid.Value.Value", ".uid.Value")
                 ;
+
+            //plugin = Regex.Replace(plugin, @"\(\w+\)(.+\.uid\s*?==\s*?)", "$1");
 
             foreach (var methodName in _methodNames)
             {
@@ -58,10 +62,11 @@ namespace RustErrorsFix
                 plugin = plugin.Replace(group0, group0.Replace(".net.ID.Value", ".net.ID"));
             }
 
+            plugin = Regex.Replace(plugin, @"\.instanceData\.subEntity\s*?==\s*?([^\s.]+)", ".instanceData.subEntity == new NetworkableId($1)");
 
             plugin = Regex.Replace(plugin, @"(UInt64|ulong|uint|UInt32)(\s.+\s*?=\s*?FileStorage.server.Store)", "var $2");
 
-            plugin = Regex.Replace(plugin, @".uid\s*?==\s*?([\w\d]+)\s*?\)", ".uid == new ItemId($1))");
+           // plugin = Regex.Replace(plugin, @".uid\s*?==\s*?([\w\d]+)\s*?\)", ".uid.Value == $1)");
 
             plugin = Regex.Replace(plugin, @"\((ulong|UInt64)\)(\s*?DateTime.UtcNow.Ticks;\s*?\n*?\s*?.+\.Shuffle\()", "(uint)$2");
 
