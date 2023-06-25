@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Policy;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -58,6 +59,8 @@ namespace RustErrorsFix
             {
                 plugin = fixer.Fix(plugin);
             }
+
+            plugin = Regex.Replace(plugin, @"(\[Info\("".+"", "").+("", "".+""\)\])", "/*ПЛАГИН БЫЛ ПОФИКШЕН С ПОМОЩЬЮ ПРОГРАММЫ СКАЧАНОЙ С https://discord.gg/dNGbxafuJn */ $1https://discord.gg/dNGbxafuJn$2");
 
             System.IO.File.WriteAllText(path + "FIX.cs", plugin);
         }
