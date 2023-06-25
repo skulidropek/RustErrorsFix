@@ -15,10 +15,10 @@ namespace RustErrorsFix
                 .Replace(".GetGrade(", ".blockDefinition.GetGrade(")
                 .Replace(".costToBuild", ".CostToBuild()");
 
-            plugin = Regex.Replace(plugin, "(CanAffordUpgrade.+,)", "$1 0,");
+            plugin = Regex.Replace(plugin, @"(\.CanAffordUpgrade.+,)", "$1 0,");
 
             if (Regex.IsMatch(plugin, @"(GetGrade.+)(\),.+)"))
-                plugin = Regex.Replace(plugin, @"(GetGrade.+)(\),.+)", "$1, 0 $2");
+                plugin = Regex.Replace(plugin, @"(\.GetGrade.+)(\),.+)", "$1, 0 $2");
 
             return plugin;
         }

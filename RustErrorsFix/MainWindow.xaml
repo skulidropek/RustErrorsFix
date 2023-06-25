@@ -3,11 +3,163 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RustErrorsFix"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button Content="Select plugin" HorizontalAlignment="Center" Margin="0,248,0,0" VerticalAlignment="Top" Height="154" Width="353" RenderTransformOrigin="0.547,0.546" Click="Button_Click"/>
+         mc:Ignorable="d"
+        Title="MainWindow" 
+        Height="516" 
+        Width="854"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="{x:Null}"
+        WindowStartupLocation="CenterScreen" Foreground="{x:Null}" Icon="/Images/kgbP2ZS.png"
+        MouseDown="BorderTopSection_MouseDown">
 
-    </Grid>
+    <Window.Resources>
+
+        <ImageBrush x:Key="Assets" ImageSource="/Images/shutdown_def.png" Stretch="None"/>
+        <ImageBrush x:Key="OPEN" ImageSource="/Images/active.png" Stretch="UniformToFill"/>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
+        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+        <Style x:Key="CloseButton" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Assets}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Assets}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="OpenButton" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource OPEN}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource OPEN}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+
+    <Border CornerRadius="52" BorderThickness="10" BorderBrush="White">
+        <Border.Background>
+            <ImageBrush ImageSource="/Images/1654295494_1-celes-club-p-oboi-na-rabochii-stol-rast-krasivie-1.jpg"/>
+        </Border.Background>
+
+
+        <Border CornerRadius="35" BorderThickness="20">
+
+
+            <Grid>
+
+                <Button Content="" BorderThickness="0" BorderBrush="Transparent" HorizontalAlignment="Left" Height="54" Margin="730,0,0,0" VerticalAlignment="Top" Width="64" Style="{DynamicResource CloseButton}" Click="CloseUI" RenderTransformOrigin="0.519,0.553">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/Images/shutdown_mo.png" Stretch="None"/>
+                    </Button.Background>
+                </Button>
+                <Button Content="      SELECT PLUGINS" BorderThickness="0" BorderBrush="Transparent" HorizontalAlignment="Left" Height="62" Margin="10,70,0,0" VerticalAlignment="Top" Width="235" Style="{DynamicResource OpenButton}" Click="Open" RenderTransformOrigin="0.519,0.553" FontFamily="Arial Black" FontSize="18">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/Images/UPGRADE_whitouttext.png" Stretch="UniformToFill"/>
+                    </Button.Background>
+                </Button>
+                <Button Content="      DISCORD" BorderThickness="0" BorderBrush="Transparent" HorizontalAlignment="Left" Height="62" Margin="10,137,0,0" VerticalAlignment="Top" Width="235" Style="{DynamicResource OpenButton}" Click="DS" RenderTransformOrigin="0.519,0.553" FontFamily="Arial Black" FontSize="18">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/Images/UPGRADE_whitouttext.png" Stretch="UniformToFill"/>
+                    </Button.Background>
+                </Button>
+                <Button Content="      BOOSTY" BorderThickness="0" BorderBrush="Transparent" HorizontalAlignment="Left" Height="62" Margin="10,204,0,0" VerticalAlignment="Top" Width="235" Style="{DynamicResource OpenButton}" Click="Сайт" RenderTransformOrigin="0.519,0.553" FontFamily="Arial Black" FontSize="18">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/Images/UPGRADE_whitouttext.png" Stretch="UniformToFill"/>
+                    </Button.Background>
+                </Button>
+                <Button Content="      FRIEND" BorderThickness="0" BorderBrush="Transparent" HorizontalAlignment="Left" Height="62" Margin="10,274,0,0" VerticalAlignment="Top" Width="235" Style="{DynamicResource OpenButton}" RenderTransformOrigin="0.519,0.553" FontFamily="Arial Black" FontSize="18" Click="Button_Click">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/Images/UPGRADE_whitouttext.png" Stretch="UniformToFill"/>
+                    </Button.Background>
+                </Button>
+                <TextBlock Margin="598,428,10,10" Text="WOLF &amp; SkuliDropek" FontFamily="Arial Black" FontSize="16">
+                    <TextBlock.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFCE00FF"/>
+                            <GradientStop Color="#FFA0FF00" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
+            </Grid>
+        </Border>
+    </Border>
+
+
+
 </Window>

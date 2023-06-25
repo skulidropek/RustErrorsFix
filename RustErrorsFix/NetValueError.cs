@@ -20,6 +20,14 @@ namespace RustErrorsFix
         };
 
 
+        private List<string> _fileStorageServer = new List<string>()
+        {
+            "Get",
+            "Store",
+            "RemoveExact",
+            "Remove"
+        };
+
         //List<Method> methods = new List<Method>()
         //{
         //    new Method("FindContainer", "ItemContainerId"),
@@ -43,34 +51,61 @@ namespace RustErrorsFix
                 .Replace(".uid.Value.Value", ".uid.Value")
                 ;
 
-            //plugin = Regex.Replace(plugin, @"\(\w+\)(.+\.uid\s*?==\s*?)", "$1");
+            var pluginOneLine = plugin.Replace("\n", " ");
 
             foreach (var methodName in _methodNames)
             {
-                plugin = Regex.Replace(plugin, $@".{methodName.Key}\(([^\)^\(]+)\)", $".{methodName.Key}(new {methodName.Value}($1))");
+               // while (Regex.IsMatch(plugin, $@".{methodName.Key}\(([^\)^\(]+)\)"))
+                {
+                    var matches = Regex.Matches(plugin, $@".{methodName.Key}\(([^\)^\(]+)\)");
+
+                    foreach(Match match in matches)
+                    {
+                        var field = match.Groups[1].ToString();
+
+                        if (!Regex.IsMatch(pluginOneLine, @$"{methodName.Value}\s{field}.*\.serverEntities\.Find\({field}\)"))
+                        {
+                            plugin = plugin.Replace(match.Groups[0].ToString(), Regex.Replace(match.Groups[0].ToString(), $@".{methodName.Key}\(([^\)^\(]+)\)", $".{methodName.Key}(new {methodName.Value}($1))"));
+                        }
+                    }
+                }
+
+                //plugin = Regex.Replace(plugin, $@".{methodName.Key}\(([^\)^\(]+)\)", $".{methodName.Key}(new {methodName.Value}($1))");
             }
 
-            while (Regex.IsMatch(plugin, @"FileStorage\.server\.Store\(.+\.net\.ID\.Value.*?\)"))
+            foreach(var name in _fileStorageServer)
             {
-                var group0 = Regex.Match(plugin, @"FileStorage\.server\.Store\(.+\.net\.ID\.Value.*?\)").Groups[0].ToString(); //, "FileStorage.server.Store($1)"
-                plugin = plugin.Replace(group0, group0.Replace(".net.ID.Value", ".net.ID"));
-            }
+                //plugin = Regex.Replace(plugin, @"(FileStorage\.server\.Remove\(.+,)(.+\.Sign.NetId*?)\)", "$1 new NetworkableId($2));");
 
-            while (Regex.IsMatch(plugin, @"FileStorage\.server\.RemoveExact\(.+\.net\.ID\.Value.*?\)"))
-            {
-                var group0 = Regex.Match(plugin, @"FileStorage\.server\.RemoveExact\(.+\.net\.ID\.Value.*?\)").Groups[0].ToString(); //, "FileStorage.server.Store($1)"
-                plugin = plugin.Replace(group0, group0.Replace(".net.ID.Value", ".net.ID"));
+                //Regex.Replace(plugin, $@"FileStorage\.server\.{name}\((.+\.Sign.NetId*?)\)", $"FileStorage.server.{name}$1");
+
+                while (Regex.IsMatch(plugin, $@"FileStorage\.server\.{name}\(.+\.net\.ID\.Value.*?\)"))
+                {
+                    var group0 = Regex.Match(plugin, $@"FileStorage\.server\.{name}\(.+\.net\.ID\.Value.*?\)").Groups[0].ToString(); //, "FileStorage.server.Store($1)"
+                    plugin = plugin.Replace(group0, group0.Replace(".net.ID.Value", ".net.ID"));
+                }
+
+                plugin = Regex.Replace(plugin, $@"FileStorage\.server\.{name}\((.+\.Sign\.TextureId\(\)),", $"FileStorage.server.{name}((uint)$1,");
+                plugin = Regex.Replace(plugin, $@"(FileStorage\.server\.{name}\(.+,)(.+\.Sign.NetId*?)\)", "$1 new NetworkableId($2))");
             }
 
             plugin = Regex.Replace(plugin, @"\.instanceData\.subEntity\s*?==\s*?([^\s.]+)", ".instanceData.subEntity == new NetworkableId($1)");
 
             plugin = Regex.Replace(plugin, @"(UInt64|ulong|uint|UInt32)(\s.+\s*?=\s*?FileStorage.server.Store)", "var $2");
 
-           // plugin = Regex.Replace(plugin, @".uid\s*?==\s*?([\w\d]+)\s*?\)", ".uid.Value == $1)");
+            // plugin = Regex.Replace(plugin, @".uid\s*?==\s*?([\w\d]+)\s*?\)", ".uid.Value == $1)");
+
+            plugin = Regex.Replace(plugin, @"(\.textureIDs\[.+\]\s*?=\s*?)", "$1 (uint)");
+            plugin = Regex.Replace(plugin, @"(\.SetAudioId\()", "$1 (uint)");
+            plugin = Regex.Replace(plugin, @"(\._overlayTextureCrc\s*?=\s*?)", "$1 (uint)");
 
             plugin = Regex.Replace(plugin, @"\((ulong|UInt64)\)(\s*?DateTime.UtcNow.Ticks;\s*?\n*?\s*?.+\.Shuffle\()", "(uint)$2");
 
-            plugin = Regex.Replace(plugin, ".+\\.(panelName|bp\\.panelNane) = \"generic_resizable\";", "");
+            if(plugin.Contains(".panelName"))
+                plugin = Regex.Replace(plugin, ".+\\.panelName = \"generic_resizable\";", "");
+
+
+
             return plugin;
         }
 
