@@ -17,6 +17,7 @@ namespace RustErrorsFix
             { "UpdateActiveItem", "ItemId" },
             //{ ".FindItemUID(ulong.Parse", "ItemId" },
             { "FindItemUID", "ItemId" },
+            { "FindItemByUID", "ItemId" },
         };
 
 
@@ -49,6 +50,7 @@ namespace RustErrorsFix
                 .Replace("CommunityEntity.ServerInstance.net.ID.Value", "CommunityEntity.ServerInstance.net.ID")
                 .Replace(".uid", ".uid.Value")
                 .Replace(".uid.Value.Value", ".uid.Value")
+                .Replace("uid = Net.sv.TakeUID()", "uid = new ItemId(Net.sv.TakeUID())")
                 ;
 
             var pluginOneLine = plugin.Replace("\n", " ");
@@ -104,7 +106,8 @@ namespace RustErrorsFix
             if(plugin.Contains(".panelName"))
                 plugin = Regex.Replace(plugin, ".+\\.panelName = \"generic_resizable\";", "");
 
-
+            plugin = Regex.Replace(plugin, @"(PrefabAttribute\.server\.Find<.+>\()", "$1 (uint)");
+            plugin = Regex.Replace(plugin, @"(\.SetHeldItem\(.+)(\);)", "$1.Value$2");
 
             return plugin;
         }

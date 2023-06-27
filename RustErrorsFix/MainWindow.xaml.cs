@@ -34,7 +34,9 @@ namespace RustErrorsFix
             new NetWrite(),
             new UpgradeError(),
             new CCTV_RCError(),
+            new ItemContainerError()
         };
+
         public MainWindow()
         {
             InitializeComponent();
@@ -42,11 +44,10 @@ namespace RustErrorsFix
 
         private void Open(object sender, RoutedEventArgs e)
         {
-
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
             if (openFileDialog.ShowDialog() == false) 
-            {
+            { 
                 MessageBox.Show("Вы не выбрали файл");
                 return; 
             }
