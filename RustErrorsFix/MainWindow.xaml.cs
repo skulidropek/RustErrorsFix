@@ -34,7 +34,8 @@ namespace RustErrorsFix
             new NetWrite(),
             new UpgradeError(),
             new CCTV_RCError(),
-            new ItemContainerError()
+            new ItemContainerError(),
+            new UsingError(),
         };
 
         public MainWindow()
