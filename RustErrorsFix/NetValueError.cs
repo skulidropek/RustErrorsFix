@@ -92,6 +92,12 @@ namespace RustErrorsFix
             }
 
             plugin = Regex.Replace(plugin, @"\.instanceData\.subEntity\s*?==\s*?([^\s.]+)", ".instanceData.subEntity == new NetworkableId($1)");
+            plugin = Regex.Replace(plugin, @"\.instanceData\.subEntity\s*?=\s*?([^\s^;.]+)", ".instanceData.subEntity = new NetworkableId($1)");
+            plugin = Regex.Replace(plugin, @"(\.instanceData\??.subEntity)(\s*\?\?\s*[^\s^,.]+)", "$1.Value $2");
+            plugin = Regex.Replace(plugin, @"(\.instanceData\.subEntity)(\s*\!\=\s*[^\s^,.]+)", "$1.Value $2");
+
+
+            plugin = Regex.Replace(plugin, @"(new Network\.Visibility\.Group\(null,\s*)(networkGroupId\);)", "$1 (uint)$2");
 
             plugin = Regex.Replace(plugin, @"(UInt64|ulong|uint|UInt32)(\s.+\s*?=\s*?FileStorage.server.Store)", "var $2");
 
@@ -108,6 +114,10 @@ namespace RustErrorsFix
 
             plugin = Regex.Replace(plugin, @"(PrefabAttribute\.server\.Find<.+>\()", "$1 (uint)");
             plugin = Regex.Replace(plugin, @"(\.SetHeldItem\(.+)(\);)", "$1.Value$2");
+
+            plugin = Regex.Replace(plugin, @"\.uid\.Value\s*=\s*([^=]?\s*[^;^\s^=.]+)", ".uid = new NetworkableId($1)");
+
+            plugin = Regex.Replace(plugin, @"new NetworkableId\((.+\.instanceData\.subEntity)\)", "$1");
 
             return plugin;
         }
