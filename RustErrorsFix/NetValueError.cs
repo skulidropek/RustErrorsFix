@@ -57,11 +57,11 @@ namespace RustErrorsFix
 
             foreach (var methodName in _methodNames)
             {
-               // while (Regex.IsMatch(plugin, $@".{methodName.Key}\(([^\)^\(]+)\)"))
+                // while (Regex.IsMatch(plugin, $@".{methodName.Key}\(([^\)^\(]+)\)"))
                 {
                     var matches = Regex.Matches(plugin, $@".{methodName.Key}\(([^\)^\(]+)\)");
 
-                    foreach(Match match in matches)
+                    foreach (Match match in matches)
                     {
                         var field = match.Groups[1].ToString();
 
@@ -75,7 +75,7 @@ namespace RustErrorsFix
                 //plugin = Regex.Replace(plugin, $@".{methodName.Key}\(([^\)^\(]+)\)", $".{methodName.Key}(new {methodName.Value}($1))");
             }
 
-            foreach(var name in _fileStorageServer)
+            foreach (var name in _fileStorageServer)
             {
                 //plugin = Regex.Replace(plugin, @"(FileStorage\.server\.Remove\(.+,)(.+\.Sign.NetId*?)\)", "$1 new NetworkableId($2));");
 
@@ -109,7 +109,7 @@ namespace RustErrorsFix
 
             plugin = Regex.Replace(plugin, @"\((ulong|UInt64)\)(\s*?DateTime.UtcNow.Ticks;\s*?\n*?\s*?.+\.Shuffle\()", "(uint)$2");
 
-            if(plugin.Contains(".panelName"))
+            if (plugin.Contains(".panelName"))
                 plugin = Regex.Replace(plugin, ".+\\.panelName = \"generic_resizable\";", "");
 
             plugin = Regex.Replace(plugin, @"(PrefabAttribute\.server\.Find<.+>\()", "$1 (uint)");

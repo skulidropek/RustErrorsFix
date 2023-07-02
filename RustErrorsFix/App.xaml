@@ -1,9 +1,184 @@
 ﻿<Application x:Class="RustErrorsFix.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:RustErrorsFix"
              StartupUri="MainWindow.xaml">
+
     <Application.Resources>
 
+        <SolidColorBrush x:Key="TransparentColor" Color="Transparent"/>
+
+        <SolidColorBrush x:Key="WhiteGrayColor" Color="#303540"/>
+        <SolidColorBrush x:Key="WhiteColor" Color="#fff"/>
+
+        <SolidColorBrush x:Key="GrayColor" Color="#232831"/>
+        <SolidColorBrush x:Key="DarkColor" Color="#000"/>
+
+        <LinearGradientBrush x:Key="BlueGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#336ADE" Offset="0"/>
+            <GradientStop Color="#72C0FE" Offset="1"/>
+        </LinearGradientBrush>
+
+        <Storyboard x:Key="StartHoverButton">
+            <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" To="#000" Duration="0:0:.2" />
+        </Storyboard>
+
+        <Storyboard x:Key="EndHoverButton">
+            <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" To="#232831" Duration="0:0:.2" />
+        </Storyboard>
+
+        <Storyboard x:Key="StartScaleBlueButton">
+            <DoubleAnimation Storyboard.TargetProperty="Width" To="250" Duration="0:0:.2" />
+            <DoubleAnimation Storyboard.TargetProperty="Height" To="50" Duration="0:0:.2" />
+        </Storyboard>
+
+        <Storyboard x:Key="EndScaleBlueButton">
+            <DoubleAnimation Storyboard.TargetProperty="Width" To="242" Duration="0:0:.2" />
+            <DoubleAnimation Storyboard.TargetProperty="Height" To="48" Duration="0:0:.2" />
+        </Storyboard>
+
+        <Style x:Key="BtnSquare" TargetType="Button">
+
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0 0 5 0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Width" Value="48"/>
+
+            <Setter Property="Background" Value="{StaticResource GrayColor}" />
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="Button">
+
+                        <Border x:Name="BtnSquareBackground" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter Width="26" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard Storyboard="{StaticResource StartHoverButton}" />
+                                </Trigger.EnterActions>
+
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard Storyboard="{StaticResource EndHoverButton}" />
+                                </Trigger.ExitActions>
+
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="BtnSquareBackground" Property="Background" Value="{StaticResource GrayColor}"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+        </Style>
+
+        <Style x:Key="BtnGradientBlue" TargetType="Button">
+
+            <Setter Property="Foreground" Value="{StaticResource WhiteColor}"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0 0 5 0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="Width" Value="242" />
+            <Setter Property="Height" Value="48" />
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="Button">
+
+                        <Border Background="{StaticResource BlueGradient}" CornerRadius="5">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+            <Style.Triggers>
+
+                <Trigger Property="IsMouseOver" Value="True">
+
+                    <Trigger.EnterActions>
+                        <BeginStoryboard  Storyboard="{StaticResource StartScaleBlueButton}"/>
+                    </Trigger.EnterActions>
+
+                    <Trigger.ExitActions>
+                        <BeginStoryboard  Storyboard="{StaticResource EndScaleBlueButton}"/>
+                    </Trigger.ExitActions>
+
+                </Trigger>
+
+            </Style.Triggers>
+
+        </Style>
+
+        <Style x:Key="BtnFriendsGray" TargetType="Button">
+
+            <Setter Property="Foreground" Value="{StaticResource WhiteColor}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0 0 5 0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="Width" Value="240"/>
+
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="Button">
+
+                        <Border Padding="10 0" Background="{StaticResource WhiteGrayColor}" CornerRadius="5">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+            <Style.Triggers>
+
+                <Trigger Property="IsMouseOver" Value="True">
+
+                    <Trigger.EnterActions>
+                        <BeginStoryboard  Storyboard="{StaticResource StartScaleBlueButton}"/>
+                    </Trigger.EnterActions>
+
+                    <Trigger.ExitActions>
+                        <BeginStoryboard  Storyboard="{StaticResource EndScaleBlueButton}"/>
+                    </Trigger.ExitActions>
+
+                </Trigger>
+
+            </Style.Triggers>
+
+        </Style>
+
     </Application.Resources>
+
 </Application>
