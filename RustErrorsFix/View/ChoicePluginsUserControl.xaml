@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="RustErrorsFix.Views.Components.ChoicePluginsUserControl"
+﻿<UserControl x:Class="RustErrorsFix.View.ChoicePluginsUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              FontFamily="./#MontserratBold"
@@ -6,7 +6,7 @@
              Background="{x:Null}">
 
     <StackPanel Width="600" VerticalAlignment="Center" HorizontalAlignment="Center">
-        <TextBlock FontWeight="Bold" FontSize="50" HorizontalAlignment="Center" Text="ВЫБЕРИТЕ ПЛАГИН" />
+        <TextBlock x:Name="SelectPluginTextBlock" FontWeight="Bold" FontSize="50" HorizontalAlignment="Center" Text="ВЫБЕРИТЕ ПЛАГИН" />
         <Border Width="381" HorizontalAlignment="Center" Margin="0 0 0 30" BorderThickness="0 0 0 1" BorderBrush="#72c0fe" />
         <Button x:Name="BtnChoice" Content="Выбрать" Style="{StaticResource BtnGradientBlue}" Click="BtnChoice_Click" />
     </StackPanel>

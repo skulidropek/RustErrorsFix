@@ -25,7 +25,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Frame x:Name="FrameMain" />
+        <Frame x:Name="FrameMain" NavigationUIVisibility="Hidden" />
 
         <Grid Background="{StaticResource WhiteGrayColor}" Grid.Row="1" VerticalAlignment="Bottom">
 
@@ -41,13 +41,17 @@
                     <Image Source="/wwwroot/Images/BtnClose.png" />
                 </Button>
 
-                <Button Style="{StaticResource BtnSquare}" Click="CloseUI">
-                    <Image Source="/wwwroot/Images/BtnLanguage.png" />
+                <Button x:Name="LangImageRu" Style="{StaticResource BtnSquare}" Click="Button_Click_5" >
+                    <Image Source="/wwwroot/Images/BtnLanguage.png" Height="20" VerticalAlignment="Top" />
+                </Button>
+
+                <Button x:Name="LangImageEn" Visibility="Collapsed" Style="{StaticResource BtnSquare}" Click="Button_Click_5" >
+                    <Image  Source="/wwwroot/Images/eng.png" Height="20" VerticalAlignment="Top" />
                 </Button>
 
             </StackPanel>
 
-            <StackPanel Margin="8" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
+            <StackPanel Margin="100 0 0 0" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
 
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="48">
                     <Border Background="{StaticResource GrayColor}" CornerRadius="5"/>
@@ -58,19 +62,19 @@
 
             <StackPanel Margin="8" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="2">
 
-                <Button Style="{StaticResource BtnSquare}" Click="CloseUI">
-                    <Image Source="/wwwroot/Images/BtnFriends.png" />
+                <Button Style="{StaticResource BtnSquare}" Click="Button_Click_1" >
+                    <Image Source="/wwwroot/Images/BtnFriends.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="26" />
                 </Button>
 
-                <Button Style="{StaticResource BtnSquare}" Click="CloseUI">
+                <Button Style="{StaticResource BtnSquare}" Click="Button_Click_2" >
                     <Image Source="/wwwroot/Images/BtnYouTube.png" />
                 </Button>
 
-                <Button Style="{StaticResource BtnSquare}" Click="CloseUI">
+                <Button Style="{StaticResource BtnSquare}" Click="Button_Click_3" >
                     <Image Source="/wwwroot/Images/BtnDiscord.png" />
                 </Button>
 
-                <Button Style="{StaticResource BtnSquare}" Click="CloseUI">
+                <Button Style="{StaticResource BtnSquare}" Click="Button_Click_4" >
                     <Image Source="/wwwroot/Images/BtnBoosty.png" />
                 </Button>
 

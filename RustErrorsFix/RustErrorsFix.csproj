@@ -7,11 +7,16 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="wwwroot\Images\eng.png" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<Page Include="App.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<Resource Include="wwwroot\Images\192.png" />
 		<Resource Include="wwwroot\Images\Background.png" />
 		<Resource Include="wwwroot\Images\BtnBoosty.png" />
 		<Resource Include="wwwroot\Images\BtnClose.png" />
@@ -19,7 +24,11 @@
 		<Resource Include="wwwroot\Images\BtnFriends.png" />
 		<Resource Include="wwwroot\Images\BtnLanguage.png" />
 		<Resource Include="wwwroot\Images\BtnYouTube.png" />
+		<Resource Include="wwwroot\Images\eng.png" />
+		<Resource Include="wwwroot\Images\favicon.png" />
+		<Resource Include="wwwroot\Images\fioletov.png" />
 		<Resource Include="wwwroot\Images\Logo.png" />
+		<Resource Include="wwwroot\Images\Screenshot_1 1.png" />
 	</ItemGroup>
 	
 	<ItemGroup>
