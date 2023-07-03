@@ -20,6 +20,8 @@ namespace RustErrorsFix
             if (Regex.IsMatch(plugin, @"(GetGrade.+)(\),.+)"))
                 plugin = Regex.Replace(plugin, @"(\.GetGrade.+)(\),.+)", "$1, 0 $2");
 
+            plugin = plugin.Replace(".blockDefinition.blockDefinition.GetGrade", ".blockDefinition.GetGrade");
+
             return plugin;
         }
     }

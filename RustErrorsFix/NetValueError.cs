@@ -17,6 +17,7 @@ namespace RustErrorsFix
             { "UpdateActiveItem", "ItemId" },
             //{ ".FindItemUID(ulong.Parse", "ItemId" },
             { "FindItemUID", "ItemId" },
+            { "FindItemByUID", "ItemId" },
         };
 
 
@@ -49,17 +50,18 @@ namespace RustErrorsFix
                 .Replace("CommunityEntity.ServerInstance.net.ID.Value", "CommunityEntity.ServerInstance.net.ID")
                 .Replace(".uid", ".uid.Value")
                 .Replace(".uid.Value.Value", ".uid.Value")
+                .Replace("uid = Net.sv.TakeUID()", "uid = new ItemId(Net.sv.TakeUID())")
                 ;
 
             var pluginOneLine = plugin.Replace("\n", " ");
 
             foreach (var methodName in _methodNames)
             {
-               // while (Regex.IsMatch(plugin, $@".{methodName.Key}\(([^\)^\(]+)\)"))
+                // while (Regex.IsMatch(plugin, $@".{methodName.Key}\(([^\)^\(]+)\)"))
                 {
                     var matches = Regex.Matches(plugin, $@".{methodName.Key}\(([^\)^\(]+)\)");
 
-                    foreach(Match match in matches)
+                    foreach (Match match in matches)
                     {
                         var field = match.Groups[1].ToString();
 
@@ -73,7 +75,7 @@ namespace RustErrorsFix
                 //plugin = Regex.Replace(plugin, $@".{methodName.Key}\(([^\)^\(]+)\)", $".{methodName.Key}(new {methodName.Value}($1))");
             }
 
-            foreach(var name in _fileStorageServer)
+            foreach (var name in _fileStorageServer)
             {
                 //plugin = Regex.Replace(plugin, @"(FileStorage\.server\.Remove\(.+,)(.+\.Sign.NetId*?)\)", "$1 new NetworkableId($2));");
 
@@ -90,6 +92,12 @@ namespace RustErrorsFix
             }
 
             plugin = Regex.Replace(plugin, @"\.instanceData\.subEntity\s*?==\s*?([^\s.]+)", ".instanceData.subEntity == new NetworkableId($1)");
+            plugin = Regex.Replace(plugin, @"\.instanceData\.subEntity\s*?=\s*?([^\s^;.]+)", ".instanceData.subEntity = new NetworkableId($1)");
+            plugin = Regex.Replace(plugin, @"(\.instanceData\??.subEntity)(\s*\?\?\s*[^\s^,.]+)", "$1.Value $2");
+            plugin = Regex.Replace(plugin, @"(\.instanceData\.subEntity)(\s*\!\=\s*[^\s^,.]+)", "$1.Value $2");
+
+
+            plugin = Regex.Replace(plugin, @"(new Network\.Visibility\.Group\(null,\s*)(networkGroupId\);)", "$1 (uint)$2");
 
             plugin = Regex.Replace(plugin, @"(UInt64|ulong|uint|UInt32)(\s.+\s*?=\s*?FileStorage.server.Store)", "var $2");
 
@@ -101,10 +109,15 @@ namespace RustErrorsFix
 
             plugin = Regex.Replace(plugin, @"\((ulong|UInt64)\)(\s*?DateTime.UtcNow.Ticks;\s*?\n*?\s*?.+\.Shuffle\()", "(uint)$2");
 
-            if(plugin.Contains(".panelName"))
+            if (plugin.Contains(".panelName"))
                 plugin = Regex.Replace(plugin, ".+\\.panelName = \"generic_resizable\";", "");
 
+            plugin = Regex.Replace(plugin, @"(PrefabAttribute\.server\.Find<.+>\()", "$1 (uint)");
+            plugin = Regex.Replace(plugin, @"(\.SetHeldItem\(.+)(\);)", "$1.Value$2");
 
+            plugin = Regex.Replace(plugin, @"\.uid\.Value\s*=\s*([^=]?\s*[^;^\s^=.]+)", ".uid = new NetworkableId($1)");
+
+            plugin = Regex.Replace(plugin, @"new NetworkableId\((.+\.instanceData\.subEntity)\)", "$1");
 
             return plugin;
         }

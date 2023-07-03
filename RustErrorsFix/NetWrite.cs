@@ -16,7 +16,7 @@ namespace RustErrorsFix
                 .Replace("Net.sv.write", "netWrite")
                 ;
 
-            if(plugin.Contains(@"netWrite.Start"))
+            if (plugin.Contains(@"netWrite.Start"))
                 plugin = Regex.Replace(plugin, @"(.+)netWrite.Start\(\)", "$1 netWrite.Start(Net.sv)");
             plugin = Regex.Replace(plugin, @"(netWrite\.EntityID\(.+\.net.ID).Value", "$1");
 

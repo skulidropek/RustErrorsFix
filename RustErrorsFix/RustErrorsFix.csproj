@@ -7,25 +7,28 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="1654295494_1-celes-club-p-oboi-na-rabochii-stol-rast-krasivie-1.jpg" />
-    <None Remove="active.png" />
-    <None Remove="close_icon.png" />
-    <None Remove="close_mo_icon.png" />
-    <None Remove="kgbP2ZS.png" />
-    <None Remove="print_icon.png" />
-    <None Remove="shutdown_def.png" />
-    <None Remove="shutdown_mo.png" />
-    <None Remove="UPGRADE_whitouttext.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<Page Include="App.xaml" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Images\1654295494_1-celes-club-p-oboi-na-rabochii-stol-rast-krasivie-1.jpg" />
-    <Resource Include="Images\active.png" />
-    <Resource Include="Images\kgbP2ZS.png" />
-    <Resource Include="Images\shutdown_def.png" />
-    <Resource Include="Images\shutdown_mo.png" />
-    <Resource Include="Images\UPGRADE_whitouttext.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="wwwroot\Images\Background.png" />
+		<Resource Include="wwwroot\Images\BtnBoosty.png" />
+		<Resource Include="wwwroot\Images\BtnClose.png" />
+		<Resource Include="wwwroot\Images\BtnDiscord.png" />
+		<Resource Include="wwwroot\Images\BtnFriends.png" />
+		<Resource Include="wwwroot\Images\BtnLanguage.png" />
+		<Resource Include="wwwroot\Images\BtnYouTube.png" />
+		<Resource Include="wwwroot\Images\Logo.png" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<Content Include="wwwroot\Fonts\MontserratBlack.ttf">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="wwwroot\Fonts\MontserratBold.ttf">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
 </Project>
