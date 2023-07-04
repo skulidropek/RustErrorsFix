@@ -40,10 +40,13 @@ namespace RustErrorsFix
 
         public string Fix(string plugin)
         {
+            plugin = Regex.Replace(plugin, @"(\.net\??\.ID)", "$1.Value");
+            plugin = Regex.Replace(plugin, @"(\.net\??\.ID\.Value)\.Value", "$1");
+
             plugin = plugin
                 .Replace("uint", "ulong")
-                .Replace(".net.ID", ".net.ID.Value")
-                .Replace(".net.ID.Value.Value", ".net.ID.Value")
+               // .Replace(".net.ID", ".net.ID.Value")
+              //  .Replace(".net.ID.Value.Value", ".net.ID.Value")
                 .Replace("UInt32", "UInt64")
                 .Replace("FileStorage.server.RemoveExact(UInt64.", "FileStorage.server.RemoveExact(UInt32.")
                 .Replace("FileStorage.server.RemoveExact(ulong.", "FileStorage.server.RemoveExact(uint.")
@@ -84,7 +87,7 @@ namespace RustErrorsFix
                 while (Regex.IsMatch(plugin, $@"FileStorage\.server\.{name}\(.+\.net\.ID\.Value.*?\)"))
                 {
                     var group0 = Regex.Match(plugin, $@"FileStorage\.server\.{name}\(.+\.net\.ID\.Value.*?\)").Groups[0].ToString(); //, "FileStorage.server.Store($1)"
-                    plugin = plugin.Replace(group0, group0.Replace(".net.ID.Value", ".net.ID"));
+                    plugin = plugin.Replace(group0, group0.Replace(".net.ID.Value", ".net.ID").Replace("(ulong)", "(uint)"));
                 }
 
                 plugin = Regex.Replace(plugin, $@"FileStorage\.server\.{name}\((.+\.Sign\.TextureId\(\)),", $"FileStorage.server.{name}((uint)$1,");
@@ -103,7 +106,7 @@ namespace RustErrorsFix
 
             // plugin = Regex.Replace(plugin, @".uid\s*?==\s*?([\w\d]+)\s*?\)", ".uid.Value == $1)");
 
-            plugin = Regex.Replace(plugin, @"(\.textureIDs\[.+\]\s*?=\s*?)", "$1 (uint)");
+            plugin = Regex.Replace(plugin, @"(\.textureIDs\[.+\]\s*=)(\s*[^=.]+)", "$1 (uint) $2");
             plugin = Regex.Replace(plugin, @"(\.SetAudioId\()", "$1 (uint)");
             plugin = Regex.Replace(plugin, @"(\._overlayTextureCrc\s*?=\s*?)", "$1 (uint)");
 

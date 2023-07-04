@@ -13,14 +13,14 @@ namespace RustErrorsFix
         {
             plugin = plugin
                 .Replace("Network.Net.sv.write", "Net.sv.write")
-                .Replace("Net.sv.write", "netWrite")
+                .Replace("Net.sv.write", "Netsvwrite")
                 ;
 
-            if (plugin.Contains(@"netWrite.Start"))
-                plugin = Regex.Replace(plugin, @"(.+)netWrite.Start\(\)", "$1 netWrite.Start(Net.sv)");
-            plugin = Regex.Replace(plugin, @"(netWrite\.EntityID\(.+\.net.ID).Value", "$1");
+            if (plugin.Contains(@"Netsvwrite.Start"))
+                plugin = Regex.Replace(plugin, @"(.+)Netsvwrite.Start\(\)", "$1 Netsvwrite.Start(Net.sv)");
+            plugin = Regex.Replace(plugin, @"(Netsvwrite\.EntityID\(.+\.net.ID).Value", "$1");
 
-            plugin = plugin.Replace("netWrite", "Facepunch.Pool.Get<NetWrite>()");
+            plugin = plugin.Replace("Netsvwrite", "Facepunch.Pool.Get<NetWrite>()");
 
             return plugin;
         }
