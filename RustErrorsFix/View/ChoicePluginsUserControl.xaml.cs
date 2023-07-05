@@ -19,6 +19,7 @@ public partial class ChoicePluginsUserControl : UserControl
         new CCTV_RCError(),
         new ItemContainerError(),
         new UsingError(),
+        new UnexpectedTokenError()
     };
 
     public ChoicePluginsUserControl()
@@ -40,7 +41,7 @@ public partial class ChoicePluginsUserControl : UserControl
 
         if (openFileDialog.ShowDialog() == false)
         {
-            MessageBox.Show("Вы не выбрали файл");
+            MessageBox.Show(Lang.Instance.GetLang("NotSelectFile"));
             return;
         }
 
@@ -56,5 +57,6 @@ public partial class ChoicePluginsUserControl : UserControl
         plugin = Regex.Replace(plugin, @"(\[Info\("".+"", "").+("", "".+""\)\])", "/*ПЛАГИН БЫЛ ПОФИКШЕН С ПОМОЩЬЮ ПРОГРАММЫ СКАЧАНОЙ С https://discord.gg/dNGbxafuJn */ $1https://discord.gg/dNGbxafuJn$2");
 
         System.IO.File.WriteAllText(path + "FIX.cs", plugin);
+        MessageBox.Show(Lang.Instance.GetLang("PluginReady") + " Path - " + path + "FIX.cs");
     }
 }

@@ -87,7 +87,15 @@ namespace RustErrorsFix
                 while (Regex.IsMatch(plugin, $@"FileStorage\.server\.{name}\(.+\.net\.ID\.Value.*?\)"))
                 {
                     var group0 = Regex.Match(plugin, $@"FileStorage\.server\.{name}\(.+\.net\.ID\.Value.*?\)").Groups[0].ToString(); //, "FileStorage.server.Store($1)"
+                    
+                  
+
                     plugin = plugin.Replace(group0, group0.Replace(".net.ID.Value", ".net.ID").Replace("(ulong)", "(uint)"));
+
+                    if (name != "Store")
+                    {
+                        plugin = plugin.Replace($"FileStorage.server.{name}(", $"FileStorage.server.{name}((uint)");
+                    }
                 }
 
                 plugin = Regex.Replace(plugin, $@"FileStorage\.server\.{name}\((.+\.Sign\.TextureId\(\)),", $"FileStorage.server.{name}((uint)$1,");
@@ -118,30 +126,14 @@ namespace RustErrorsFix
             plugin = Regex.Replace(plugin, @"(PrefabAttribute\.server\.Find<.+>\()", "$1 (uint)");
             plugin = Regex.Replace(plugin, @"(\.SetHeldItem\(.+)(\);)", "$1.Value$2");
 
-            plugin = Regex.Replace(plugin, @"\.uid\.Value\s*=\s*([^=]?\s*[^;^\s^=.]+)", ".uid = new NetworkableId($1)");
+            plugin = Regex.Replace(plugin, @"\.uid\.Value\s*=\s*([^=]?\s*[^;^\s^=]+)", ".uid = new NetworkableId($1)");
 
             plugin = Regex.Replace(plugin, @"new NetworkableId\((.+\.instanceData\.subEntity)\)", "$1");
 
+            plugin = plugin.Replace(".customerInventory.uid = new NetworkableId(", ".customerInventory.uid = new ItemContainerId(");
+
+
             return plugin;
-        }
-
-        class Method
-        {
-            public string MethodNameRegex;
-            public string MethodName;
-            public string ValueName;
-
-            public Method(string methodName, string valueName)
-            {
-                MethodName = methodName;
-                ValueName = valueName;
-            }
-            public Method(string methodNameRegex, string methodName, string valueName)
-            {
-                MethodNameRegex = methodNameRegex;
-                MethodName = methodName;
-                ValueName = valueName;
-            }
         }
     }
 }

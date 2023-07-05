@@ -15,6 +15,8 @@ namespace RustErrorsFix
             { "SelectPlugin", "ВЫБЕРИТЕ ПЛАГИН" },
             { "OurFriends", "НАШИ ДРУЗЬЯ" },
             { "Back", "НАЗАД" },
+            { "NotSelectFile", "Вы не выбрали файл" },
+            { "PluginReady", "Плагин готов!" },
         };
 
         Dictionary<string, string> _langsEn = new Dictionary<string, string>()
@@ -23,6 +25,7 @@ namespace RustErrorsFix
             { "SelectPlugin", "CHOOSE PLUGIN" },
             { "OurFriends", "OUR FRIENDS" },
             { "Back", "BACK" },
+            { "PluginReady", "Plugin is ready!" },
         };
 
         private bool _en;
