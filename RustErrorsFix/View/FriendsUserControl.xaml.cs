@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using RustErrorsFix.Roslyn.Managers;
 
 namespace RustErrorsFix.View;
 
@@ -12,13 +13,19 @@ public partial class FriendsUserControl : UserControl
     {
         InitializeComponent();
         Instanse = this;
+        LangManager.Subscribe(UpdateLayout);
         UpdateLayout();
     }
 
-    public void UpdateLayout()
+    ~FriendsUserControl()
     {
-        TextBlockOurFriend.Text = Lang.Instance.GetLang("OurFriends");
-        BtnFriendsBack.Content = Lang.Instance.GetLang("Back");
+        LangManager.UnSubscribe(UpdateLayout);
+    }
+
+    public void UpdateLayout(bool en)
+    {
+        TextBlockOurFriend.Text = LangManager.GetLang("OurFriends");
+        BtnFriendsBack.Content = LangManager.GetLang("Back");
     }
 
     private void BtnFriendsBack_Click(object sender, RoutedEventArgs e)

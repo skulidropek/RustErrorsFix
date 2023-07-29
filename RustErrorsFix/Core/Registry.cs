@@ -8,7 +8,7 @@ namespace RustErrorsFix.Core
 {
     internal static class Registry
     {
-        const string RegistryName = "RustErrorsFix";
+        const string RegistryName = "RustErrorsFix2";
 
         public static void AddValue(string valueName, string value)
         {
@@ -32,19 +32,18 @@ namespace RustErrorsFix.Core
 
         public static string GetValue(string valueName)
         {
-            var registry = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(RegistryName);
+            using (var registry = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(RegistryName))
+            {
+                if (registry == null)
+                    return "";
 
-            if (registry == null)
-                return "";
+                var value = registry?.GetValue(valueName);
 
-            var value = registry?.GetValue(valueName);
+                if (value == null)
+                    return "";
 
-            if (value == null)
-                return "";
-
-            registry.Close();
-
-            return (string)value;
+                return (string)value;
+            }
         }
     }
 }
