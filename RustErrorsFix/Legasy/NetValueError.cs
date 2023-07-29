@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace RustErrorsFix
+namespace RustErrorsFix.Legasy
 {
     internal class NetValueError : IErrorFixer
     {
@@ -40,13 +40,15 @@ namespace RustErrorsFix
 
         public string Fix(string plugin)
         {
+            if (_methodNames.Any(m => Regex.IsMatch(plugin, $@"\s{m.Value}\s"))) return plugin;
+
             plugin = Regex.Replace(plugin, @"(\.net\??\.ID)", "$1.Value");
             plugin = Regex.Replace(plugin, @"(\.net\??\.ID\.Value)\.Value", "$1");
 
             plugin = plugin
                 .Replace("uint", "ulong")
-               // .Replace(".net.ID", ".net.ID.Value")
-              //  .Replace(".net.ID.Value.Value", ".net.ID.Value")
+                // .Replace(".net.ID", ".net.ID.Value")
+                //  .Replace(".net.ID.Value.Value", ".net.ID.Value")
                 .Replace("UInt32", "UInt64")
                 .Replace("FileStorage.server.RemoveExact(UInt64.", "FileStorage.server.RemoveExact(UInt32.")
                 .Replace("FileStorage.server.RemoveExact(ulong.", "FileStorage.server.RemoveExact(uint.")
@@ -62,7 +64,7 @@ namespace RustErrorsFix
             {
                 // while (Regex.IsMatch(plugin, $@".{methodName.Key}\(([^\)^\(]+)\)"))
                 {
-                    var matches = Regex.Matches(plugin, $@".{methodName.Key}\(([^\)^\(]+)\)");
+                    var matches = Regex.Matches(plugin, $@"{methodName.Key}\(([^\)^\(]+)\)");
 
                     foreach (Match match in matches)
                     {
@@ -70,7 +72,7 @@ namespace RustErrorsFix
 
                         if (!Regex.IsMatch(pluginOneLine, @$"{methodName.Value}\s{field}.*\.serverEntities\.Find\({field}\)"))
                         {
-                            plugin = plugin.Replace(match.Groups[0].ToString(), Regex.Replace(match.Groups[0].ToString(), $@".{methodName.Key}\(([^\)^\(]+)\)", $".{methodName.Key}(new {methodName.Value}($1))"));
+                            plugin = plugin.Replace(match.Groups[0].ToString(), Regex.Replace(match.Groups[0].ToString(), $@"{methodName.Key}\(([^\)^\(]+)\)", $"{methodName.Key}(new {methodName.Value}($1))"));
                         }
                     }
                 }
@@ -87,8 +89,6 @@ namespace RustErrorsFix
                 while (Regex.IsMatch(plugin, $@"FileStorage\.server\.{name}\(.+\.net\.ID\.Value.*?\)"))
                 {
                     var group0 = Regex.Match(plugin, $@"FileStorage\.server\.{name}\(.+\.net\.ID\.Value.*?\)").Groups[0].ToString(); //, "FileStorage.server.Store($1)"
-                    
-                  
 
                     plugin = plugin.Replace(group0, group0.Replace(".net.ID.Value", ".net.ID").Replace("(ulong)", "(uint)"));
 

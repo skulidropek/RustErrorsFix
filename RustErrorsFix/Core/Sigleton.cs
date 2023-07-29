@@ -12,7 +12,8 @@ namespace RustErrorsFix.Core
 
         public Sigleton()
         {
-            Instance = (T)this;
+            if(Instance == null)
+                Instance = (T)this;
         }
     }
 }

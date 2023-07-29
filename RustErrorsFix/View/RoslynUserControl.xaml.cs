@@ -12,12 +12,11 @@ using System.Windows.Shapes;
 
 namespace RustErrorsFix.View;
 
-public partial class ChoicePluginsUserControl : UserControl
+public partial class RoslynUserControl : UserControl
 {
-    public ChoicePluginsUserControl()
+    public RoslynUserControl()
     {
         InitializeComponent();
-
-        DataContext = new ChoicePluginsViewModel();
+        DataContext = new RoslynViewModel();
     }
 }

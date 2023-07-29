@@ -1,4 +1,4 @@
-﻿namespace RustErrorsFix;
+﻿namespace RustErrorsFix.Legasy;
 
 internal interface IErrorFixer
 {
