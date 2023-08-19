@@ -1,7 +1,4 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
-using Roslyn_test.Abstract;
-using Roslyn_test.Factory;
-using Roslyn_test.Managers;
 using RustErrorsFix.Core.Abstract;
 using RustErrorsFix.Legasy;
 using RustErrorsFix.Model;
@@ -26,10 +23,10 @@ namespace RustErrorsFix.Core.Factory
         {
             var syntaxTree = CSharpSyntaxTree.ParseText(plugin);
 
-            ErrorManager errorManager = new ErrorManager();
-            errorManager.Compilation(syntaxTree);
+            // ErrorManager errorManager = new ErrorManager();
+            // errorManager.Compilation(syntaxTree);
 
-            return errorManager.GetErrors();
+            return new List<string>();// errorManager.GetErrors();
         } 
 
         public override string FixPlugin(string pluginContent)
@@ -37,31 +34,31 @@ namespace RustErrorsFix.Core.Factory
             // Создаем синтаксическое дерево
             var syntaxTree = CSharpSyntaxTree.ParseText(pluginContent);
 
-            ErrorManager errorManager = new ErrorManager();
-            errorManager.Compilation(syntaxTree);
+            //ErrorManager errorManager = new ErrorManager();
+            //errorManager.Compilation(syntaxTree);
 
-            foreach(var errorModel in _roslynErrorModels)
-            {
-                if (!errorModel.IsActive) continue;
+            //foreach(var errorModel in _roslynErrorModels)
+            //{
+            //    if (!errorModel.IsActive) continue;
 
-                if(errorModel.IsAnalise)
-                {
-                    errorManager.SubscribeToAnalysis(errorModel.Text, errorModel.Errors);
-                    continue;
-                }
+            //    if(errorModel.IsAnalise)
+            //    {
+            //        errorManager.SubscribeToAnalysis(errorModel.Text, errorModel.Errors);
+            //        continue;
+            //    }
 
-                errorManager.RunFixErrorNow(errorModel.Text, errorModel.Errors);
-            }
+            //    errorManager.RunFixErrorNow(errorModel.Text, errorModel.Errors);
+            //}
 
-            var plugin = errorManager.RunFix().ToString();
+            //var plugin = errorManager.RunFix().ToString();
 
-            syntaxTree = CSharpSyntaxTree.ParseText(plugin);
+            //syntaxTree = CSharpSyntaxTree.ParseText(plugin);
 
-            errorManager = new ErrorManager();
-            errorManager.Compilation(syntaxTree);
+            //errorManager = new ErrorManager();
+            //errorManager.Compilation(syntaxTree);
 
 
-            return plugin;
+            return "";//plugin;
         }
     }
 }

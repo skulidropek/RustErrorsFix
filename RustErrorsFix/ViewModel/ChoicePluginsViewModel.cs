@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using Ookii.Dialogs.Wpf;
-using Roslyn_test.Core;
 using RustErrorsFix.Core;
 using RustErrorsFix.Core.Abstract;
 using RustErrorsFix.Core.Factory;
@@ -19,31 +18,46 @@ namespace RustErrorsFix.ViewModel
 {
     internal class ChoicePluginsViewModel : ViewModelBase
     {
+        private readonly LangManager _langManager;
+
         private bool _roslynReferenseHave = !string.IsNullOrEmpty(RustReferenseManager.Path);
-        public string ChoiceButtonText => LangManager.GetLang("Select");
+        public string ChoiceButtonText => _langManager.GetLang("Select");
 
-        public string RoslynButtonText => _roslynReferenseHave ? LangManager.GetLang("Roslyn") : LangManager.GetLang("SelectFolderManaged");
+        public string RoslynButtonText => _roslynReferenseHave ? _langManager.GetLang("Roslyn") : _langManager.GetLang("SelectFolderManaged");
 
-        public string SelectPluginText => LangManager.GetLang("SelectPlugin");
+        public string SelectPluginText => _langManager.GetLang("SelectPlugin");
 
         public ICommand ChoicePluginCommand { get; private set; }
         public ICommand RoslynPageOpenCommand { get; private set; }
+        public ICommand ResetManagedFolderCommand { get; private set; }
 
         PluginFixerAbstractFactory Legasy = new LegasyPluginFixerAbstractFactory();
 
-        public ChoicePluginsViewModel()
+        private PageManager _pageManager;
+
+        public ChoicePluginsViewModel(PageManager pageManager, LangManager langManager)
         {
+            _pageManager = pageManager;
+            _langManager = langManager;
             ChoicePluginCommand = new RelayCommand(ChoicePluginCommandExecute);
             RoslynPageOpenCommand = new RelayCommand(RoslynPageOpenCommandExecute);
+            ResetManagedFolderCommand = new RelayCommand(ResetManagedFolderCommandExecute, (obj) => !string.IsNullOrEmpty(RustReferenseManager.Path));
 
-            LangManager.Subscribe(OnLangChanged);
+            _langManager.Subscribe(OnLangChanged);
 
-            LangManager.OnLangChangedInvoke();
+            _langManager.OnLangChangedInvoke();
+        }
+
+        private void ResetManagedFolderCommandExecute(object obj)
+        {
+            RustReferenseManager.Path = "";
+            _roslynReferenseHave = false;
+            OnPropertyChanged("RoslynButtonText");
         }
 
         ~ChoicePluginsViewModel()
         {
-            LangManager.UnSubscribe(OnLangChanged);
+            _langManager.UnSubscribe(OnLangChanged);
         }
 
         public void OnLangChanged(bool en)
@@ -59,7 +73,7 @@ namespace RustErrorsFix.ViewModel
 
             if (string.IsNullOrEmpty(path))
             {
-                MessageBox.Show(LangManager.GetLang("NotSelectFile"));
+                MessageBox.Show(_langManager.GetLang("NotSelectFile"));
                 return;
             }
 
@@ -91,7 +105,7 @@ namespace RustErrorsFix.ViewModel
                 return;
             }
 
-            PageManager.Instance.OpenRoslyn();
+            _pageManager.OpenRoslyn();
         }
 
         private string GetPathOpenFolderDialog()

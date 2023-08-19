@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using RustErrorsFix.Core;
 using RustErrorsFix.Legasy;
 using RustErrorsFix.Roslyn.Managers;
 using RustErrorsFix.ViewModel;
@@ -14,10 +15,10 @@ namespace RustErrorsFix.View;
 
 public partial class ChoicePluginsUserControl : UserControl
 {
-    public ChoicePluginsUserControl()
+    public ChoicePluginsUserControl(PageManager pageManager, LangManager langManager)
     {
         InitializeComponent();
 
-        DataContext = new ChoicePluginsViewModel();
+        DataContext = new ChoicePluginsViewModel(pageManager, langManager);
     }
 }

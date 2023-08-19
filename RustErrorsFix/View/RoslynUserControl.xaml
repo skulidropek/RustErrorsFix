@@ -50,15 +50,14 @@
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="0" >
 
                     <ListBox Height="300" ItemsSource="{Binding Errors}" ScrollViewer.VerticalScrollBarVisibility="Visible" Background="Transparent"  >
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Vertical" Margin="0 5" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical" Margin="0 5" >
                                     <TextBlock Text="{Binding}" Margin="0 5" TextWrapping="Wrap" Width="420px" FontSize="12" VerticalAlignment="Center" Foreground="#fff" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
                     </ListBox>
-
                 </StackPanel>
 
                 <StackPanel HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" >
@@ -68,7 +67,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="0 5">
                                     <CheckBox IsChecked="{Binding IsActive}" Background="#939393" />
-                                    <TextBlock VerticalAlignment="Center" Text="{Binding Text}" Margin="5 0 0 0" TextWrapping="Wrap" Width="195" Foreground="#fff"/>
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding ErrorText}" Margin="5 0 0 0" TextWrapping="Wrap" Width="195" Foreground="#fff"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>

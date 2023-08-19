@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RustErrorsFix.Roslyn.Managers
 {
-    internal class LangManager : Sigleton<LangManager>
+    public class LangManager
     {
         private Dictionary<string, string> _langsRu = new Dictionary<string, string>()
         {
@@ -46,7 +46,7 @@ namespace RustErrorsFix.Roslyn.Managers
         public const string RuPathLang = "/wwwroot/Images/BtnLanguage.png";
         public const string EnPathLang = "/wwwroot/Images/eng.png";
 
-        private LangManager()
+        public LangManager()
         {
             var lang = Registry.GetValue("Lang");
 
@@ -60,45 +60,36 @@ namespace RustErrorsFix.Roslyn.Managers
             _en = lang == "En";
         }
 
-        public static void OnLangChangedInvoke()
+        public void OnLangChangedInvoke()
         {
-            Instance.OnLangChanged.Invoke(Instance._en);
+            OnLangChanged.Invoke(_en);
         }
 
-        public static void Subscribe(Action<bool> action)
+        public void Subscribe(Action<bool> action)
         {
-            if (Instance == null)
-                new LangManager();
-
-            Instance.OnLangChanged += action;
+            OnLangChanged += action;
         }
 
-        public static void UnSubscribe(Action<bool> action)
+        public void UnSubscribe(Action<bool> action)
         {
-            if (Instance == null)
-                new LangManager();
-
-            Instance.OnLangChanged -= action;
+            OnLangChanged -= action;
         }
 
-        public static void Change()
+        public void Change()
         {
-            if (Instance == null)
-                new LangManager();
+            _en = !_en;
 
-            Instance._en = !Instance._en;
+            Registry.SetValue("Lang", _en ? "En" : "Ru");
 
-            Registry.SetValue("Lang", Instance._en ? "En" : "Ru");
-
-            Instance.OnLangChanged?.Invoke(Instance._en);
+            OnLangChanged?.Invoke(_en);
         }
 
-        public static string GetLang(string lang)
+        public string GetLang(string lang)
         {
-            if (Instance._en)
-                return Instance._langsEn[lang];
+            if (_en)
+                return _langsEn[lang];
 
-            return Instance._langsRu[lang];
+            return _langsRu[lang];
         }
     }
 }

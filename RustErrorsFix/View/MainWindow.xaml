@@ -20,7 +20,6 @@
         >
 
     <Grid>
-        
         <Grid.Background>
             <ImageBrush ImageSource="/wwwroot/Images/Background.png" />
         </Grid.Background>
@@ -61,11 +60,11 @@
 
             </StackPanel>
 
-            <StackPanel Margin="8" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="2">
+            <StackPanel Margin="8" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="2" Cursor="">
 
-                <Button Style="{StaticResource BtnSquare}" Command="{Binding Path=OpenFriendPageCommand}" Cursor="Hand" >
-                    <Image Source="/wwwroot/Images/BtnFriends.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="26" />
-                </Button>
+                <!-- <Button Style="{StaticResource BtnSquare}" Command="{Binding Path=OpenFriendPageCommand}" Cursor="Hand" >
+                     <Image Source="/wwwroot/Images/BtnFriends.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="26" />
+                </Button> -->
 
                 <Button Style="{StaticResource BtnSquare}" Command="{Binding Path=YoutubeCommand}" >
                     <Image Source="/wwwroot/Images/BtnYouTube.png" />
