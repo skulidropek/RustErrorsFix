@@ -1,62 +1,24 @@
 ﻿using Microsoft.Win32;
+using RustErrorsFix.Core;
+using RustErrorsFix.Legasy;
+using RustErrorsFix.Roslyn.Managers;
+using RustErrorsFix.ViewModel;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Shapes;
 
 namespace RustErrorsFix.View;
 
 public partial class ChoicePluginsUserControl : UserControl
 {
-    public static ChoicePluginsUserControl Instanse;
-
-    private List<IErrorFixer> _errors = new List<IErrorFixer>()
-    {
-        new NetValueError(),
-        new EntityListError(),
-        new NetWrite(),
-        new UpgradeError(),
-        new CCTV_RCError(),
-        new ItemContainerError(),
-        new UsingError(),
-        new UnexpectedTokenError()
-    };
-
-    public ChoicePluginsUserControl()
+    public ChoicePluginsUserControl(PageManager pageManager, LangManager langManager)
     {
         InitializeComponent();
-        Instanse = this;
-        UpdateLayout();
-    }
 
-    public void UpdateLayout()
-    {
-        BtnChoice.Content = Lang.Instance.GetLang("Select");
-        SelectPluginTextBlock.Text = Lang.Instance.GetLang("SelectPlugin");
-    }
-
-    private void BtnChoice_Click(object sender, RoutedEventArgs e)
-    {
-        OpenFileDialog openFileDialog = new OpenFileDialog();
-
-        if (openFileDialog.ShowDialog() == false)
-        {
-            MessageBox.Show(Lang.Instance.GetLang("NotSelectFile"));
-            return;
-        }
-
-        string path = openFileDialog.FileName;
-
-        var plugin = System.IO.File.ReadAllText(path);
-
-        foreach (var fixer in _errors)
-        {
-            plugin = fixer.Fix(plugin);
-        }
-
-        plugin = Regex.Replace(plugin, @"(\[Info\("".+"", "").+("", "".+""\)\])", "/*ПЛАГИН БЫЛ ПОФИКШЕН С ПОМОЩЬЮ ПРОГРАММЫ СКАЧАНОЙ С https://discord.gg/dNGbxafuJn */ $1https://discord.gg/dNGbxafuJn$2");
-
-        System.IO.File.WriteAllText(path + "FIX.cs", plugin);
-        MessageBox.Show(Lang.Instance.GetLang("PluginReady") + " Path - " + path + "FIX.cs");
+        DataContext = new ChoicePluginsViewModel(pageManager, langManager);
     }
 }

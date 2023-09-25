@@ -1,14 +1,19 @@
-﻿<UserControl x:Class="RustErrorsFix.View.ChoicePluginsUserControl"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="RustErrorsFix.View.ChoicePluginsUserControl"
              FontFamily="./#MontserratBold"
              Foreground="#fff"
-             Background="{x:Null}">
+             Background="{x:Null}"
+             xmlns:viewmodel="clr-namespace:RustErrorsFix.ViewModel" 
+             av:DataContext="{av:DesignInstance Type=viewmodel:ChoicePluginsViewModel}">
 
     <StackPanel Width="600" VerticalAlignment="Center" HorizontalAlignment="Center">
-        <TextBlock x:Name="SelectPluginTextBlock" FontWeight="Bold" FontSize="50" HorizontalAlignment="Center" Text="ВЫБЕРИТЕ ПЛАГИН" />
+        <TextBlock FontWeight="Bold" FontSize="50" HorizontalAlignment="Center" Text="{Binding Path=SelectPluginText}" />
         <Border Width="381" HorizontalAlignment="Center" Margin="0 0 0 30" BorderThickness="0 0 0 1" BorderBrush="#72c0fe" />
-        <Button x:Name="BtnChoice" Content="Выбрать" Style="{StaticResource BtnGradientBlue}" Click="BtnChoice_Click" />
+        <Button Content="{Binding Path=ChoiceButtonText}" Style="{StaticResource BtnGradientBlue}" Command="{Binding Path=ChoicePluginCommand}" />
+        <Button Margin="0 30 0 0" Content="{Binding Path=RoslynButtonText}" Style="{StaticResource BtnGradientBlue}" Command="{Binding Path=RoslynPageOpenCommand}" />
+        <Button Margin="0 30 0 0" Content="Reset Managed Folder" Command="{Binding Path=ResetManagedFolderCommand}" Style="{StaticResource BtnGradientBlue}" />
     </StackPanel>
 
 </UserControl>

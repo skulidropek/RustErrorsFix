@@ -1,0 +1,87 @@
+﻿<Window x:Class="RustErrorsFix.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:viewmodel="clr-namespace:RustErrorsFix.ViewModel" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        Title="Rust Errors Fix" 
+        Height="720" Width="1280"
+        FontSize="32"  
+        WindowStyle="None"
+        Foreground="#fff"
+        Background="{x:Null}"
+        ResizeMode="NoResize"
+        Icon="/wwwroot/Images/Logo.png"  
+        FontFamily="./#MontserratBold"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen"  
+        MouseDown="BorderTopSection_MouseDown"
+        d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
+        >
+
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/wwwroot/Images/Background.png" />
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Frame x:Name="FrameMain" NavigationUIVisibility="Hidden" />
+
+        <Grid Background="{StaticResource WhiteGrayColor}" Grid.Row="1" VerticalAlignment="Bottom">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Margin="8" VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="0">
+
+                <Button Style="{StaticResource BtnSquare}" Command="{Binding Path=QuitCommand}">
+                    <Image Source="/wwwroot/Images/BtnClose.png" />
+                </Button>
+
+                <Button x:Name="LangImageRu" Style="{StaticResource BtnSquare}" Command="{Binding Path=ChangeLanguageCommand}" >
+                    <Image Source="{Binding Path=LangImagePath}" Height="20" VerticalAlignment="Top" />
+                </Button>
+                
+            </StackPanel>
+
+            <StackPanel Margin="100 0 0 0" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
+
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="48">
+                    <Border Background="{StaticResource GrayColor}" CornerRadius="5"/>
+                    <TextBlock VerticalAlignment="Center" Text="Rust Error Fix" FontWeight="Medium" Foreground="#3D424A" Padding="12 5" />
+                </Grid>
+
+            </StackPanel>
+
+            <StackPanel Margin="8" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="2" Cursor="">
+
+                <!-- <Button Style="{StaticResource BtnSquare}" Command="{Binding Path=OpenFriendPageCommand}" Cursor="Hand" >
+                     <Image Source="/wwwroot/Images/BtnFriends.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="26" />
+                </Button> -->
+
+                <Button Style="{StaticResource BtnSquare}" Command="{Binding Path=YoutubeCommand}" >
+                    <Image Source="/wwwroot/Images/BtnYouTube.png" />
+                </Button>
+
+                <Button Style="{StaticResource BtnSquare}" Command="{Binding Path=DiscordCommand}" >
+                    <Image Source="/wwwroot/Images/BtnDiscord.png" />
+                </Button>
+
+                <Button Style="{StaticResource BtnSquare}" Command="{Binding Path=BoostyCommand}" >
+                    <Image Source="/wwwroot/Images/BtnBoosty.png" />
+                </Button>
+
+            </StackPanel>
+
+        </Grid>
+
+    </Grid>
+
+</Window>

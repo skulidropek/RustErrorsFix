@@ -8,6 +8,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Model\**" />
+    <Compile Remove="Roslyn\**" />
+    <EmbeddedResource Remove="Model\**" />
+    <EmbeddedResource Remove="Roslyn\**" />
+    <None Remove="Model\**" />
+    <None Remove="Roslyn\**" />
+    <Page Remove="Model\**" />
+    <Page Remove="Roslyn\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Core\Factory\RoslynPluginFixerAbstractFactory.cs" />
+    <Compile Remove="Core\Managers\ErrorManager.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="wwwroot\Images\eng.png" />
   </ItemGroup>
 
@@ -38,6 +54,22 @@
 		<Content Include="wwwroot\Fonts\MontserratBold.ttf">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.6.0" />
+	  <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.6.0" />
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+	  <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\RustErrorsFixLibrary\RustErrorsFixLibrary.csproj" />
 	</ItemGroup>
 
 </Project>
