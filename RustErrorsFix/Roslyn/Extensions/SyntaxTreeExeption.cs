@@ -12,6 +12,15 @@ namespace Roslyn_test.Extensions;
 
 internal static class SyntaxTreeExeption
 {
+    public static SyntaxNode ToSyntaxNode(this string code)
+    {
+        SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code);
+
+        var getRoot = syntaxTree.GetRoot().DescendantNodes().FirstOrDefault();
+
+        return getRoot;
+    }
+
     public static CSharpCompilation CreateCompilation(this SyntaxTree source, string compilationName)
     {
         List<MetadataReference> references = new List<MetadataReference>();

@@ -1,11 +1,15 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.Win32;
 using Ookii.Dialogs.Wpf;
-using Roslyn_test.Abstract;
-using Roslyn_test.Factory;
 using RustErrorsFix.Core;
 using RustErrorsFix.Core.Factory;
-using RustErrorsFix.Model;
+using RustErrorsFix.Roslyn.Factory;
 using RustErrorsFix.Roslyn.Managers;
+using RustErrorsFixLibrary.Core;
+using RustErrorsFixLibrary.Core.Interface;
+using RustErrorsFixLibrary.Core.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -18,44 +22,120 @@ namespace RustErrorsFix.ViewModel
 {
     internal class RoslynViewModel : ViewModelBase
     {
-        private string _pluginPath;
-        public string ChoiceButtonText => LangManager.GetLang("Fix");
-        public string ErrorsPluginText => LangManager.GetLang("ErrorsPlugin");
-        public string BackText => LangManager.GetLang("Back");
-        public string FixSelectionText => LangManager.GetLang("FixSelection");
+        private readonly LangManager _langManager;
+        private readonly PageManager _pageManager;
+        private readonly CodeFixManager _codeFixManager;
+        private readonly CodeFixStrategyConfiguration _configuration;
 
-        public ObservableCollection<RoslynErrorModel> YourItems { get; set; } = new ObservableCollection<RoslynErrorModel> {
-            new Model.RoslynErrorModel()
-            {
-                Text = @"не удается преобразовать из ""uint"" в ""ItemContainerId""",
-                IsAnalise = false,
-                Errors = new List<AbstractFactory>() { new FindContainerFactory() }
-            },
-            new Model.RoslynErrorModel()
-            {
-                Text = @"не удается преобразовать из "".+"" в ""uint""",
-                IsAnalise = false,
-                Errors = new List<AbstractFactory>() { new ReplaceUInt32ToUInt64Factory(), new ReplaceIDToIDValueFactory(), new ReplaceUidToUidValueFactory() }
-            },
-            new Model.RoslynErrorModel()
-            {
-                Text = @"Не удается неявно преобразовать тип ""(NetworkableId)?(ItemId)?(ItemContainerId)?"" в ""(uint)?(ulong)?""",
-                IsAnalise = true,
-                Errors = new List<AbstractFactory>() { new ReplaceIDToIDValueFactory() }
-            },
-            new Model.RoslynErrorModel()
-            {
-                Text = @"Ни одна из перегрузок метода ""(Factor)?(Test)?(GetWaterDepth)?(GetOverallWaterDepth)?(GetWaterInfo)?"" не принимает \d аргументов",
-                IsAnalise = true,
-                Errors = new List<AbstractFactory>() { new WaterLevelFactory() }
-            },
-            new Model.RoslynErrorModel()
-            {
-                Text = @".+\(.+\)"": не все пути к коду возвращают значение.",
-                IsAnalise = true,
-                Errors = new List<AbstractFactory>() { new CrashCodeFactory() }
-            }
-        };
+        public List<CompilationErrorConfigurationModel> YourItems => _configuration.Configuration;
+
+        private string _pluginPath;
+        public string ChoiceButtonText => _langManager.GetLang("Fix");
+        public string ErrorsPluginText => _langManager.GetLang("ErrorsPlugin");
+        public string BackText => _langManager.GetLang("Back");
+        public string FixSelectionText => _langManager.GetLang("FixSelection");
+
+        //public ObservableCollection<CompilationErrorConfigurationModel> YourItems { get; set; } => _configuration.Configuration;
+            //= new ObservableCollection<CompilationErrorConfigurationModel> {
+            //new Model.RoslynErrorModel()
+            //{
+            //    Text = @"не удается преобразовать из ""uint"" в ""ItemContainerId""",
+            //    IsAnalise = false,
+            //    Errors = new List<AbstractFactory>() { new FindContainerFactory() }
+            //},
+
+        //new Model.RoslynErrorModel()
+        //{
+        //    Text = @"не удается преобразовать из ""uint"" в ""(NetworkableId)|(ItemId)|(ItemContainerId)""",
+        //    IsAnalise = false,
+        //    Errors = new List<AbstractFactory>() { new ReplaceUInt32ToUInt64Factory() }
+        //},
+
+        //new Model.RoslynErrorModel()
+        //{
+        //    Text = @"не удается преобразовать из ""(NetworkableId)|(ItemId)|(ItemContainerId)"" в ""uint""",
+        //    IsAnalise = false,
+        //    Errors = new List<AbstractFactory>() { new ReplaceUInt32ToUInt64Factory(), new ReplaceIDToIDValueFactory(), new ReplaceUidToUidValueFactory() }
+        //},
+        //new Model.RoslynErrorModel()
+        //{
+        //    Text = @"Оператор ""\?\?"" невозможно применить к операнду типа ""(NetworkableId)|(ItemId)|(ItemContainerId)|\??"" и ""(int)|(uint)|(ulong)""",
+        //    IsAnalise = true,
+        //    Errors = new List<AbstractFactory>() { new ReplaceIDToIDValueFactory(), new ReplaceUidToUidValueFactory() }
+        //},
+        //new Model.RoslynErrorModel()
+        //{
+        //    Text = @"не удается преобразовать из ""(uint)|(ulong)"" в ""(NetworkableId)|(ItemId)|(ItemContainerId)""",
+        //    IsAnalise = true,
+        //    Errors = new List<AbstractFactory>() { new CanMoveItemFactory(), new ReplaceUidToUidValueFactory(), new UInt64ToNetworkabledIdFactory() }
+        //},
+        //new Model.RoslynErrorModel()
+        //{
+        //    Text = @"Не удается неявно преобразовать тип ""(NetworkableId)|(ItemId)|(ItemContainerId)"" в ""(uint)|(ulong)""",
+        //    IsAnalise = true,
+        //    Errors = new List<AbstractFactory>() { new ReplaceIDToIDValueFactory() }
+        //},
+        //new Model.RoslynErrorModel()
+        //{
+        //    Text = @"Ни одна из перегрузок метода ""(Factor)|(Test)|(GetWaterDepth)|(GetOverallWaterDepth)|(GetWaterInfo)"" не принимает \d аргументов",
+        //    IsAnalise = true,
+        //    Errors = new List<AbstractFactory>() { new WaterLevelFactory() }
+        //},
+        //new Model.RoslynErrorModel()
+        //{
+        //    Text = @"Отсутствует аргумент, соответствующий требуемому параметру ""waves"" из ""WaterLevel\.(Factor)|(Test)|(GetWaterDepth)|(GetOverallWaterDepth)|(GetWaterInfo)",
+        //    IsAnalise = true,
+        //    Errors = new List<AbstractFactory>() { new WaterLevelFactory() }
+        //},
+        //new Model.RoslynErrorModel()
+        //{
+        //    Text = @"Отсутствует аргумент, соответствующий требуемому параметру ""altMove"" из ""BasePlayer.GetIdealContainer\(BasePlayer, Item, bool\)""",
+        //    IsAnalise = true,
+        //    Errors = new List<AbstractFactory>() { new GetIdealContainerFactory() }
+        //},
+        //new Model.RoslynErrorModel()
+        //{
+        //    Text = @".+\(.+\)"": не все пути к коду возвращают значение.",
+        //    IsAnalise = true,
+        //    Errors = new List<AbstractFactory>() { new CrashCodeFactory() }
+        //},
+        //new Model.RoslynErrorModel()
+        //{
+        //    Text = @"""ItemCraftTask"" не содержит определения ""owner"".+",
+        //    IsAnalise = true,
+        //    Errors = new List<AbstractFactory>() { new ItemCraftTask() }
+        //},
+        //new Model.RoslynErrorModel()
+        //{
+        //    Text = @"""SpawnPopulationBase"" не содержит определения ""_targetDensity""",
+        //    IsAnalise = true,
+        //    Errors = new List<AbstractFactory>() { new TargetDensityReplace() }
+        //},
+        //new Model.RoslynErrorModel()
+        //{
+        //    Text = @"""BuildingBlock"" не содержит определения ""GetGrade"", и не удалось найти доступный метод расширения ""GetGrade"", принимающий тип ""BuildingBlock"" в качестве первого аргумента \(возможно, пропущена директива using или ссылка на сборку\)",
+        //    IsAnalise = true,
+        //    Errors = new List<AbstractFactory>() { new UpgradeFactory() }
+        //},    
+        //new Model.RoslynErrorModel()
+        //{
+        //    Text = @""".+.EquipWeapon\(\)"": не найден метод, пригодный для переопределения",
+        //    IsAnalise = true,
+        //    Errors = new List<AbstractFactory>() { new EquipWeaponFactory() }
+        //},
+        //new Model.RoslynErrorModel()
+        //{
+        //    Text = @"""ListHashSet<BasePlayer>"" не содержит определения ""ForEach"", и не удалось найти доступный метод расширения ""ForEach"", принимающий тип ""ListHashSet<BasePlayer>"" в качестве первого аргумента \(возможно, пропущена директива using или ссылка на сборку\)",
+        //    IsAnalise = true,
+        //    Errors = new List<AbstractFactory>() { new ListHashSetFactory() }
+        //},  
+        //new Model.RoslynErrorModel()
+        //{
+        //    Text = @"""Quaternion"" не содержит определение для ""ID""",
+        //    IsAnalise = true,
+        //    Errors = new List<AbstractFactory>() { new QuatrionIDFactory() }
+        //},
+        //};
 
         public ICommand ChoicePluginCommand { get; private set; }
         public ICommand RoslynPageOpenCommand { get; private set; }
@@ -76,28 +156,30 @@ namespace RustErrorsFix.ViewModel
             }
         }
 
-        private RoslynPluginFixerAbstractFactory Roslyn;
-
-
-        public RoslynViewModel()
+        public RoslynViewModel(PageManager pageManager, LangManager langManager, CodeFixManager codeFixManager, CodeFixStrategyConfiguration configuration)
         {
+            _pageManager = pageManager;
+            _langManager = langManager;
+            _codeFixManager = codeFixManager;
+            _configuration = configuration;
+
             ChoicePluginCommand = new RelayCommand(ChoicePluginCommandExecute);
             RoslynPageOpenCommand = new RelayCommand(RoslynPageOpenCommandExecute);
             BackCommand = new RelayCommand(BackCommandExecute);
 
-            LangManager.Subscribe(OnLangChanged);
+            _langManager.Subscribe(OnLangChanged);
 
-            LangManager.OnLangChangedInvoke();
+            _langManager.OnLangChangedInvoke();
 
             string path = GetPathOpenFileDialog();
 
             if (string.IsNullOrEmpty(path))
             {
-                MessageBox.Show(LangManager.GetLang("NotSelectFile"));
+                MessageBox.Show(_langManager.GetLang("NotSelectFile"));
                 Task.Run(async () =>
                 {
                     await Task.Delay(10);
-                    TheardForm.Call(() => PageManager.Instance.OpenChocePlugins());
+                    TheardForm.Call(() => _pageManager.OpenChocePlugins());
                 });
                 return;
             }
@@ -106,26 +188,25 @@ namespace RustErrorsFix.ViewModel
 
             var plugin = System.IO.File.ReadAllText(path);
 
-            Roslyn = new RoslynPluginFixerAbstractFactory(YourItems.ToList());
-            Errors = new ObservableCollection<string>(Roslyn.GetErrors(plugin));
+            var syntaxTree = CSharpSyntaxTree.ParseText(plugin);
+
+            _codeFixManager.Compilation(syntaxTree, RustReferenseManager.Path);
+
+            Errors = new ObservableCollection<string>(_codeFixManager.GetErrors());
 
             foreach (var error in Errors)
             {
-                foreach (var roslynError in YourItems)
+                foreach (var roslynError in _configuration.Configuration)
                 {
-                    if (Regex.IsMatch(error, roslynError.Text))
-                    {
+                    if(Regex.IsMatch(error, roslynError.ErrorText))
                         roslynError.IsActive = true;
-                    }
                 }
             }
         }
 
-        // = new RoslynPluginFixerAbstractFactory(YourItems.ToList());
-
         ~RoslynViewModel()
         {
-            LangManager.UnSubscribe(OnLangChanged);
+            _langManager.UnSubscribe(OnLangChanged);
         }
 
         public void OnLangChanged(bool en)
@@ -138,26 +219,27 @@ namespace RustErrorsFix.ViewModel
 
         public void ChoicePluginCommandExecute(object obj)
         {
-            Roslyn = new RoslynPluginFixerAbstractFactory(YourItems.ToList());
-            var plugin = System.IO.File.ReadAllText(_pluginPath);
+            var plugin = _codeFixManager.RunFix().ToString();
 
-            plugin = Roslyn.FixPlugin(plugin);
+            var syntaxTree = CSharpSyntaxTree.ParseText(plugin);
 
-            plugin = Regex.Replace(plugin, @"(\[Info\("".+"", "").+("", "".+""\)\])", "/*ПЛАГИН БЫЛ ПОФИКШЕН С ПОМОЩЬЮ ПРОГРАММЫ СКАЧАНОЙ С https://discord.gg/dNGbxafuJn */ $1https://discord.gg/dNGbxafuJn$2");
+            _codeFixManager.Compilation(syntaxTree, RustReferenseManager.Path);
+
+            Errors = new ObservableCollection<string>(_codeFixManager.GetErrors());
+
+            plugin = Regex.Replace(plugin, @"(\[Info\("".*"", "").*("", "".*""\)\])", "/*ПЛАГИН БЫЛ ПОФИКШЕН С ПОМОЩЬЮ ПРОГРАММЫ СКАЧАНОЙ С https://discord.gg/dNGbxafuJn */ $1https://discord.gg/dNGbxafuJn$2");
 
             System.IO.File.WriteAllText(_pluginPath + "FIX.cs", plugin);
-
-            Errors = new ObservableCollection<string>(Roslyn.GetErrors(plugin));
         }
 
         public void RoslynPageOpenCommandExecute(object obj)
         {
-            PageManager.Instance.OpenRoslyn();
+            _pageManager.OpenRoslyn();
         }
 
         private void BackCommandExecute(object obj)
         {
-            PageManager.Instance.OpenChocePlugins();
+            _pageManager.OpenChocePlugins();
         }
 
         private string GetPathOpenFileDialog()

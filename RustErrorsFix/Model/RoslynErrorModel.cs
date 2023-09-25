@@ -1,5 +1,4 @@
-﻿using Roslyn_test.Abstract;
-using RustErrorsFix.Core;
+﻿using RustErrorsFix.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +39,6 @@ namespace RustErrorsFix.Model
 
         public bool IsAnalise;
 
-        public List<AbstractFactory> Errors = new List<AbstractFactory>();
+       // public List<AbstractFactory> Errors = new List<AbstractFactory>();
     }
 }

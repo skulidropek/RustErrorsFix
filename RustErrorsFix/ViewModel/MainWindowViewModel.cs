@@ -5,15 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using RustErrorsFix.Core;
 using RustErrorsFix.View;
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using RustErrorsFix.Roslyn.Managers;
 
 namespace RustErrorsFix.ViewModel
 {
     internal class MainWindowViewModel : ViewModelBase
     {
+        private PageManager _pageManager;
+        private LangManager _langManager;
         private string _langImagePath;
 
         public ICommand BoostyCommand { get; private set; }
@@ -33,8 +35,13 @@ namespace RustErrorsFix.ViewModel
             }
         }
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(PageManager pageManager, LangManager langManager)
         {
+            _pageManager = pageManager;
+            _langManager = langManager;
+
+            _pageManager.OpenChocePlugins();
+
             BoostyCommand = new RelayCommand(BoostyCommandExecute);
             DiscordCommand = new RelayCommand(DiscordCommandExecute);
             YoutubeCommand = new RelayCommand(YoutubeCommandExecute);
@@ -42,12 +49,13 @@ namespace RustErrorsFix.ViewModel
             QuitCommand = new RelayCommand(QuitCommandExecute);
             ChangeLanguageCommand = new RelayCommand(ChangeLanguageCommandExecute);
 
-            LangManager.Subscribe((lang) =>
+            _langManager.Subscribe((lang) =>
             {
                 LangImagePath = lang ? LangManager.EnPathLang : LangManager.RuPathLang;
             });
 
-            LangManager.OnLangChangedInvoke();
+            _langManager.OnLangChangedInvoke();
+            _langManager = langManager;
         }
 
         public void BoostyCommandExecute(object sender)
@@ -67,13 +75,13 @@ namespace RustErrorsFix.ViewModel
 
         public void OpenFriendPageCommandExecute(object sender)
         {
-            if(PageManager.Instance.ActivePage is FriendsUserControl)
+            if (_pageManager.ActivePage is FriendsUserControl)
             {
-                PageManager.Instance.OpenChocePlugins();
+                _pageManager.OpenChocePlugins();
                 return;
             }
 
-            PageManager.Instance.OpenFriends();
+            _pageManager.OpenFriends();
         }
 
         public void QuitCommandExecute(object sender)
@@ -83,7 +91,7 @@ namespace RustErrorsFix.ViewModel
 
         public void ChangeLanguageCommandExecute(object sender)
         {
-            LangManager.Change();
+            _langManager.Change();
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using Microsoft.Win32;
+using RustErrorsFix.Core;
 using RustErrorsFix.Legasy;
 using RustErrorsFix.Roslyn.Managers;
 using RustErrorsFix.ViewModel;
+using RustErrorsFixLibrary.Core;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,9 +17,9 @@ namespace RustErrorsFix.View;
 
 public partial class RoslynUserControl : UserControl
 {
-    public RoslynUserControl()
+    public RoslynUserControl(PageManager pageManager, LangManager langManager, CodeFixManager codeFixManager, CodeFixStrategyConfiguration configuration)
     {
         InitializeComponent();
-        DataContext = new RoslynViewModel();
+        DataContext = new RoslynViewModel(pageManager, langManager, codeFixManager, configuration);
     }
 }

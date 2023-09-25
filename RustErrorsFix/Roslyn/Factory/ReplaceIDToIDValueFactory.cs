@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Roslyn_test.Abstract;
+using System.Text.RegularExpressions;
 
 namespace Roslyn_test.Factory
 {
@@ -25,10 +26,15 @@ namespace Roslyn_test.Factory
         {
             public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
             {
-                if (node.Identifier.ValueText == "ID" && node.Parent is MemberAccessExpressionSyntax memberAccess &&
-                    memberAccess.Expression.ToString().Contains(".net") && memberAccess.Name.Identifier.ValueText != "Value")
+                if (node.Identifier.ValueText == "ID")
                 {
-                    return SyntaxFactory.IdentifierName("ID.Value");
+                    if(Regex.IsMatch(node.Parent.Parent.ToString(), @"\??\.net\??.ID"))
+                    {
+                        if (node.ChildNodes().Count() == 0)
+                        {
+                            return SyntaxFactory.IdentifierName("ID.Value");
+                        }
+                    }
                 }
 
                 return base.VisitIdentifierName(node);

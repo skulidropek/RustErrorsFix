@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslyn_test.Abstract;
 using Roslyn_test.Core;
 using Roslyn_test.Extensions;
+using RustErrorsFix.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Roslyn_test.Managers
 {
-    internal class ErrorManager
+    internal class ErrorManager : Sigleton<ErrorManager>
     {
         private List<Error> _errors = new List<Error>();
         private SyntaxTree _pluginSyntaxTree;
@@ -26,6 +27,7 @@ namespace Roslyn_test.Managers
         public void Compilation(SyntaxTree tree)
         {
             _pluginSyntaxTree = tree;
+
             foreach (var diagnostic in tree.CreateCompilation("Plugin").GetDiagnostics())
             {
                 if (diagnostic.DefaultSeverity == DiagnosticSeverity.Error)
@@ -80,7 +82,6 @@ namespace Roslyn_test.Managers
             return editor.Visit(_pluginSyntaxTree.GetRoot());
         }
 
-
         public bool HaveError(string nameOrRegex)
         {
             return Find(nameOrRegex) != null;
@@ -100,40 +101,43 @@ namespace Roslyn_test.Managers
                 _errors = errors;
             }
 
-            public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
+            public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax method)
             {
+                SyntaxNode node = method;
+
                 var location = GetLocation(node.GetLocation());
 
-                if (!TryGetError(location, out Error error))
+                if (!TryGetError(location, out List<Error> errors))
                     return node;
 
-
-                foreach(var abstractFactory in error.AbstractFactorys)
+                foreach(var error in errors)
                 {
-                    node = abstractFactory.Fix(node) as MethodDeclarationSyntax;
+                    foreach (var abstractFactory in error.AbstractFactorys)
+                    {
+                        node = abstractFactory.Fix(node);
 
-                    if (node == null)
-                        return null;
-
+                        if (node == null)
+                            return null;
+                    }
                 }
 
                 return node;
             }
 
-            public bool TryGetError((int, int) location, out Error errorOut)
+            public bool TryGetError((int, int) location, out List<Error> errorOut)
             {
+                errorOut = new List<Error>();
+
                 foreach (var error in _errors)
                 {
                     //Console.WriteLine($"{location.Item1} <= {error.Line} && {error.Line} <= {location.Item2}");
                     if (location.Item1 <= error.Line && error.Line <= location.Item2)
                     {
-                        errorOut = error;
-                        return true;
+                        errorOut.Add(error);
                     }
                 }
 
-                errorOut = null;
-                return false;
+                return errorOut.Count > 0;
             }
 
             public (int, int) GetLocation(Location location)

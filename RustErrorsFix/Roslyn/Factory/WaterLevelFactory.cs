@@ -13,7 +13,7 @@ namespace Roslyn_test.Factory
 {
     internal class WaterLevelFactory : AbstractFactory
     {
-        public override SyntaxNode Fix(SyntaxNode node)
+        public override SyntaxNode Fix(SyntaxNode node) 
         {
             foreach (var invocationExpressionSyntax in node.DescendantNodes().OfType<InvocationExpressionSyntax>())
             {
@@ -46,11 +46,22 @@ namespace Roslyn_test.Factory
                 var lastArgument = argumentList.ChildNodes().Last();
                 argumentList = argumentList.RemoveNode(lastArgument, SyntaxRemoveOptions.KeepEndOfLine);
 
-                newArgumentList = argumentList.AddArguments(
-                    SyntaxFactory.Argument(SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression)),
-                    SyntaxFactory.Argument(SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression)),
-                    lastArgument as ArgumentSyntax
+                if(lastArgument.ToString() == "true" || lastArgument.ToString() == "false")
+                {
+                    newArgumentList = argumentList.AddArguments(
+                        SyntaxFactory.Argument(SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression)),
+                        lastArgument as ArgumentSyntax
                     );
+                }
+                else
+                {
+                    newArgumentList = argumentList.AddArguments(
+                        SyntaxFactory.Argument(SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression)),
+                        SyntaxFactory.Argument(SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression)),
+                        lastArgument as ArgumentSyntax
+                    );
+                }
+              
             }
             else
             {
