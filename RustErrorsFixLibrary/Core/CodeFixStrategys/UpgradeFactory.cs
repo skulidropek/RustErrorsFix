@@ -17,7 +17,11 @@ namespace RustErrorsFixLibrary.Core.CodeFixStrategys
             string code = model.ToFullString();
 
             code = Regex.Replace(code, @"([^\s=]+)\.(?<!blockDefinition\.)GetGrade\(([^\)]+)", "$1.blockDefinition.GetGrade($2, $1.skinID");
-            code = Regex.Replace(code, @"(?<=\.GetGrade\()(.+?(?=\)|,)).*\).costToBuild(?!\()", "$0($1)").Replace("costToBuild", "CostToBuild()");
+            code = Regex.Replace(code, @"(?<=\.GetGrade\()(.+?(?=\)|,)).*\).costToBuild(?!\()", "$0($1)");
+            code = Regex.Replace(code, @"costToBuild(\(?.*?\)?)", "CostToBuild$1");
+            code = Regex.Replace(code, @"((\w+)\.CanChangeToGrade\([^,]+,)([^,]+\))", "$1$2.skinID,$3");
+            code = Regex.Replace(code, @"((\w+)\.CanAffordUpgrade\([^,]+,)([^,]+\))", "$1$2.skinID,$3");
+            code = Regex.Replace(code, @"CostToBuild(?!\()", "CostToBuild()");
 
             return ToSyntaxNode(code);
         }

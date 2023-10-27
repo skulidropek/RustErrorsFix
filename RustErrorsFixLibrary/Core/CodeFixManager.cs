@@ -1,4 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using RustErrorsFixLibrary.Core.Abstract;
 using RustErrorsFixLibrary.Core.Extensions;
@@ -6,10 +8,12 @@ using RustErrorsFixLibrary.Core.Interface;
 using RustErrorsFixLibrary.Core.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace RustErrorsFixLibrary.Core
 {
@@ -18,11 +22,15 @@ namespace RustErrorsFixLibrary.Core
         private readonly List<CompilationErrorModel> _errors = new List<CompilationErrorModel>();
         private readonly CodeFixStrategyConfiguration _configuration;
         private readonly CodeEditor _codeEditor;
+        private readonly AnalyzerConfiguration _analyzerConfiguration;
         private readonly IServiceProvider _serviceProvider;
         private SyntaxTree _pluginSyntaxTree;
 
-        public CodeFixManager(CodeEditor codeEditor, CodeFixStrategyConfiguration configuration, IServiceProvider serviceProvider)
+        public SyntaxTree SyntaxTree => _pluginSyntaxTree;
+
+        public CodeFixManager(AnalyzerConfiguration analyzerConfiguration, CodeEditor codeEditor, CodeFixStrategyConfiguration configuration, IServiceProvider serviceProvider)
         {
+            _analyzerConfiguration = analyzerConfiguration;
             _codeEditor = codeEditor;
             _configuration = configuration;
             _serviceProvider = serviceProvider;
@@ -33,12 +41,30 @@ namespace RustErrorsFixLibrary.Core
             return _errors.Select(e => $"[{e.Line},{e.Symbol}]{e.Text}");
         }
 
+        public ImmutableArray<Diagnostic> GetDiagnostics(CSharpCompilation compilation)
+        {
+            List<DiagnosticAnalyzer> diagnosticAnalyzers = new List<DiagnosticAnalyzer>();
+
+            foreach(var diagnostic in _analyzerConfiguration.Configuration)
+            {
+                diagnosticAnalyzers.Add((DiagnosticAnalyzer)_serviceProvider.GetRequiredService(diagnostic));
+            }
+
+            var analyzers = diagnosticAnalyzers.ToImmutableArray();
+            var compilationWithAnalyzers = compilation.WithAnalyzers(analyzers);
+            var diagnostics = compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync().GetAwaiter().GetResult();
+
+            diagnostics = diagnostics.AddRange(compilation.GetDiagnostics());
+
+            return diagnostics;
+        }
+
         public void Compilation(SyntaxTree tree, string librarisFolder)
         {
             _errors.Clear();
             _pluginSyntaxTree = tree;
 
-            foreach (var diagnostic in tree.CreateCompilation("Plugin", librarisFolder).GetDiagnostics())
+            foreach (var diagnostic in GetDiagnostics(tree.CreateCompilation("Plugin", librarisFolder)))//)
             {
                 if (diagnostic.DefaultSeverity == DiagnosticSeverity.Error)
                 {
@@ -48,7 +74,8 @@ namespace RustErrorsFixLibrary.Core
                     {
                         Line = int.Parse(match.Groups[1].ToString()),
                         Symbol = int.Parse(match.Groups[2].ToString()),
-                        Text = match.Groups[3].ToString()
+                        Text = match.Groups[3].ToString(),
+                        Location = diagnostic.Location
                     });
                 }
             }
@@ -70,13 +97,18 @@ namespace RustErrorsFixLibrary.Core
 
         public void RunFixErrorNow(string nameOrRegex, IEnumerable<CodeFixStrategy> abstractFactories)
         {
-            var error = Find(nameOrRegex);
+            var errors = Find(nameOrRegex);
 
-            if (error == null)
+            if (errors == null)
                 return;
 
-            foreach (var abstractFactory in abstractFactories)
-                _pluginSyntaxTree = abstractFactory.Fix(_pluginSyntaxTree.GetRoot()).SyntaxTree;
+            foreach (var error in errors)
+            {
+                foreach (var abstractFactory in abstractFactories)
+                {
+                    _pluginSyntaxTree = abstractFactory.Fix(_pluginSyntaxTree.GetRoot(), (error.Line, error.Symbol), error).SyntaxTree;
+                }
+            }
         }
 
         public SyntaxNode RunFix()
@@ -106,7 +138,12 @@ namespace RustErrorsFixLibrary.Core
 
         private IEnumerable<CompilationErrorModel> Find(string nameOrRegex)
         {
-            return _errors.Where(e => Regex.IsMatch(e.Text, nameOrRegex));
+            var compilationErrorModels = _errors.Where(e => Regex.IsMatch(e.Text, nameOrRegex));
+
+            foreach(var compilationErrorModel in compilationErrorModels)
+                compilationErrorModel.Parametrs = Regex.Match(compilationErrorModel.Text, nameOrRegex).Groups;
+
+            return compilationErrorModels;
         }
     }
 }

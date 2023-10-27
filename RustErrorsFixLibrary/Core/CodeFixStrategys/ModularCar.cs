@@ -16,8 +16,9 @@ namespace RustErrorsFixLibrary.Core.CodeFixStrategys
             string code = model.ToFullString();
 
             code = Regex.Replace(code, "(?<!engineController)\\.FinishStartingEngine", ".engineController.FinishStartingEngine");
-            code = Regex.Replace(code, "carLock", "CarLock");
-            code = Regex.Replace(code, "fuelSystem", "GetFuelSystem()");
+            code = Regex.Replace(code, @"\.carLock", ".CarLock");
+            code = Regex.Replace(code, @"\.GetFuelSystem(?!\()", ".GetFuelSystem()");
+            code = Regex.Replace(code, @"\.fuelSystem", ".GetFuelSystem()");
             code = Regex.Replace(code, "CanRunEngines", "engineController.CanRunEngine");
 
             return ToSyntaxNode(code);

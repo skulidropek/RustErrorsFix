@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using RustErrorsFixLibrary.Core.Interface;
 using RustErrorsFixLibrary.Core.Model;
 using System;
@@ -25,9 +26,12 @@ namespace RustErrorsFixLibrary.Core
 
         public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax method) => FixError(method);
 
+        public override SyntaxNode VisitFieldDeclaration(FieldDeclarationSyntax node) => FixError(node);
+
+        public override SyntaxNode VisitConstructorDeclaration(ConstructorDeclarationSyntax node) => FixError(node);
+
         public SyntaxNode FixError(SyntaxNode node)
         {
-
             var location = GetLocation(node.GetLocation());
 
             if (!TryGetError(location, out List<CompilationErrorModel> errors))
@@ -37,7 +41,9 @@ namespace RustErrorsFixLibrary.Core
             {
                 foreach (var abstractFactory in error.CodeFixStrategy)
                 {
-                    node = abstractFactory.Fix(node);
+                    string nodeText = node.ToFullString();
+
+                    node = abstractFactory.Fix(node, (error.Line - location.Item1, error.Symbol), error);
 
                     if (node == null)
                         return null;
@@ -51,6 +57,10 @@ namespace RustErrorsFixLibrary.Core
         {
             errorOut = new List<CompilationErrorModel>();
 
+            if(location.Item1 > 250)
+            {
+
+            }
             foreach (var error in _errors)
             {
                 //Console.WriteLine($"{location.Item1} <= {error.Line} && {error.Line} <= {location.Item2}");

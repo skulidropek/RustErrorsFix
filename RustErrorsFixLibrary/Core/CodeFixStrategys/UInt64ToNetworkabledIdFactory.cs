@@ -17,6 +17,7 @@ namespace RustErrorsFixLibrary.Core.CodeFixStrategys
         {
             string code = model.ToFullString();
 
+
             List<(string, string)> tuples = new List<(string, string)>()
             {
                 (@".serverEntities.Find", "NetworkableId"),
@@ -51,7 +52,7 @@ namespace RustErrorsFixLibrary.Core.CodeFixStrategys
 
             foreach (var tuble in tuples)
             {
-                foreach(Match match in Regex.Matches(code, tuble.Item1 + @"\(((?!new).+)\)"))
+                foreach(Match match in Regex.Matches(code, tuble.Item1 + @"\(((?!new)[\w.]+)\)"))
                 {
                     var group1 = match.Groups[1].ToString();
 
@@ -88,6 +89,8 @@ namespace RustErrorsFixLibrary.Core.CodeFixStrategys
 
             if(Regex.IsMatch(code, @"(new Item[\s\n\w{}=\d,.]*)uid\s*=\s*([^,\s]+)"))
                 code = Regex.Replace(code, @"(new Item[\s\n\w{}=\d,.]*)uid\s*=\s*([^,\s]+)", "$1uid = new ItemId($2)");
+
+            code = Regex.Replace(code, @"(\.svActiveItemID ==? .+)\.Value", "$1");
 
             return ToSyntaxNode(code);
         }
