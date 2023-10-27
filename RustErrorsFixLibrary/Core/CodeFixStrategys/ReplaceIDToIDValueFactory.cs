@@ -30,6 +30,11 @@ namespace RustErrorsFixLibrary.Core.CodeFixStrategys
                 {
                     if(Regex.IsMatch(node.Parent.Parent.ToString(), @"\??\.net\??.ID"))
                     {
+                        if(Regex.IsMatch(node.Parent.Parent.ToString().Split(' ').Last(), @"net.ID.Value"))
+                        {
+                            return base.VisitIdentifierName(node);
+                        }
+
                         if (node.ChildNodes().Count() == 0)
                         {
                             return SyntaxFactory.IdentifierName("ID.Value");

@@ -18,9 +18,14 @@ namespace RustErrorsFixLibrary.Core.CodeFixStrategys
         {
             string code = node.ToFullString();
 
-            code = Regex.Replace(code, @"OnItemCraft\([^)]+", "$1, BasePlayer player, Item item1");
+            code = Regex.Replace(code, @"(OnItemCraft\([^,)]+)\)", "$1, BasePlayer player, Item item1)");
 
-            code = Regex.Replace(code, @"(.+ (OnItemCraftFinished\([^)]+)|(OnItemCraftCancelled\([^)]+))", "$1, ItemCrafter itemCrafterOwner");
+            if (code.Contains("OnItemCraft"))
+                code = Regex.Replace(code, ".+ player = task.owner;", "");
+
+            code = Regex.Replace(code, @"(?!.*\bItemCrafter\s+itemCrafterOwner\b)((?=.*\b(OnItemCraftFinished|OnItemCraftCancelled)\()[^)]+)", "$1, ItemCrafter itemCrafterOwner");
+
+            //code = Regex.Replace(code, @"(.+ (OnItemCraftFinished\([^)]+)|(OnItemCraftCancelled\([^)]+))", "$1, ItemCrafter itemCrafterOwner");
 
             if (code.Contains("itemCrafterOwner"))
             {

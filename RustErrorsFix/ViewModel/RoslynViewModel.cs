@@ -26,116 +26,14 @@ namespace RustErrorsFix.ViewModel
         private readonly PageManager _pageManager;
         private readonly CodeFixManager _codeFixManager;
         private readonly CodeFixStrategyConfiguration _configuration;
-
-        public List<CompilationErrorConfigurationModel> YourItems => _configuration.Configuration;
+        
+        public IEnumerable<CompilationErrorConfigurationModel> YourItems => _configuration.Configuration.OrderByDescending(s => s.IsActive);
 
         private string _pluginPath;
         public string ChoiceButtonText => _langManager.GetLang("Fix");
         public string ErrorsPluginText => _langManager.GetLang("ErrorsPlugin");
         public string BackText => _langManager.GetLang("Back");
         public string FixSelectionText => _langManager.GetLang("FixSelection");
-
-        //public ObservableCollection<CompilationErrorConfigurationModel> YourItems { get; set; } => _configuration.Configuration;
-            //= new ObservableCollection<CompilationErrorConfigurationModel> {
-            //new Model.RoslynErrorModel()
-            //{
-            //    Text = @"не удается преобразовать из ""uint"" в ""ItemContainerId""",
-            //    IsAnalise = false,
-            //    Errors = new List<AbstractFactory>() { new FindContainerFactory() }
-            //},
-
-        //new Model.RoslynErrorModel()
-        //{
-        //    Text = @"не удается преобразовать из ""uint"" в ""(NetworkableId)|(ItemId)|(ItemContainerId)""",
-        //    IsAnalise = false,
-        //    Errors = new List<AbstractFactory>() { new ReplaceUInt32ToUInt64Factory() }
-        //},
-
-        //new Model.RoslynErrorModel()
-        //{
-        //    Text = @"не удается преобразовать из ""(NetworkableId)|(ItemId)|(ItemContainerId)"" в ""uint""",
-        //    IsAnalise = false,
-        //    Errors = new List<AbstractFactory>() { new ReplaceUInt32ToUInt64Factory(), new ReplaceIDToIDValueFactory(), new ReplaceUidToUidValueFactory() }
-        //},
-        //new Model.RoslynErrorModel()
-        //{
-        //    Text = @"Оператор ""\?\?"" невозможно применить к операнду типа ""(NetworkableId)|(ItemId)|(ItemContainerId)|\??"" и ""(int)|(uint)|(ulong)""",
-        //    IsAnalise = true,
-        //    Errors = new List<AbstractFactory>() { new ReplaceIDToIDValueFactory(), new ReplaceUidToUidValueFactory() }
-        //},
-        //new Model.RoslynErrorModel()
-        //{
-        //    Text = @"не удается преобразовать из ""(uint)|(ulong)"" в ""(NetworkableId)|(ItemId)|(ItemContainerId)""",
-        //    IsAnalise = true,
-        //    Errors = new List<AbstractFactory>() { new CanMoveItemFactory(), new ReplaceUidToUidValueFactory(), new UInt64ToNetworkabledIdFactory() }
-        //},
-        //new Model.RoslynErrorModel()
-        //{
-        //    Text = @"Не удается неявно преобразовать тип ""(NetworkableId)|(ItemId)|(ItemContainerId)"" в ""(uint)|(ulong)""",
-        //    IsAnalise = true,
-        //    Errors = new List<AbstractFactory>() { new ReplaceIDToIDValueFactory() }
-        //},
-        //new Model.RoslynErrorModel()
-        //{
-        //    Text = @"Ни одна из перегрузок метода ""(Factor)|(Test)|(GetWaterDepth)|(GetOverallWaterDepth)|(GetWaterInfo)"" не принимает \d аргументов",
-        //    IsAnalise = true,
-        //    Errors = new List<AbstractFactory>() { new WaterLevelFactory() }
-        //},
-        //new Model.RoslynErrorModel()
-        //{
-        //    Text = @"Отсутствует аргумент, соответствующий требуемому параметру ""waves"" из ""WaterLevel\.(Factor)|(Test)|(GetWaterDepth)|(GetOverallWaterDepth)|(GetWaterInfo)",
-        //    IsAnalise = true,
-        //    Errors = new List<AbstractFactory>() { new WaterLevelFactory() }
-        //},
-        //new Model.RoslynErrorModel()
-        //{
-        //    Text = @"Отсутствует аргумент, соответствующий требуемому параметру ""altMove"" из ""BasePlayer.GetIdealContainer\(BasePlayer, Item, bool\)""",
-        //    IsAnalise = true,
-        //    Errors = new List<AbstractFactory>() { new GetIdealContainerFactory() }
-        //},
-        //new Model.RoslynErrorModel()
-        //{
-        //    Text = @".+\(.+\)"": не все пути к коду возвращают значение.",
-        //    IsAnalise = true,
-        //    Errors = new List<AbstractFactory>() { new CrashCodeFactory() }
-        //},
-        //new Model.RoslynErrorModel()
-        //{
-        //    Text = @"""ItemCraftTask"" не содержит определения ""owner"".+",
-        //    IsAnalise = true,
-        //    Errors = new List<AbstractFactory>() { new ItemCraftTask() }
-        //},
-        //new Model.RoslynErrorModel()
-        //{
-        //    Text = @"""SpawnPopulationBase"" не содержит определения ""_targetDensity""",
-        //    IsAnalise = true,
-        //    Errors = new List<AbstractFactory>() { new TargetDensityReplace() }
-        //},
-        //new Model.RoslynErrorModel()
-        //{
-        //    Text = @"""BuildingBlock"" не содержит определения ""GetGrade"", и не удалось найти доступный метод расширения ""GetGrade"", принимающий тип ""BuildingBlock"" в качестве первого аргумента \(возможно, пропущена директива using или ссылка на сборку\)",
-        //    IsAnalise = true,
-        //    Errors = new List<AbstractFactory>() { new UpgradeFactory() }
-        //},    
-        //new Model.RoslynErrorModel()
-        //{
-        //    Text = @""".+.EquipWeapon\(\)"": не найден метод, пригодный для переопределения",
-        //    IsAnalise = true,
-        //    Errors = new List<AbstractFactory>() { new EquipWeaponFactory() }
-        //},
-        //new Model.RoslynErrorModel()
-        //{
-        //    Text = @"""ListHashSet<BasePlayer>"" не содержит определения ""ForEach"", и не удалось найти доступный метод расширения ""ForEach"", принимающий тип ""ListHashSet<BasePlayer>"" в качестве первого аргумента \(возможно, пропущена директива using или ссылка на сборку\)",
-        //    IsAnalise = true,
-        //    Errors = new List<AbstractFactory>() { new ListHashSetFactory() }
-        //},  
-        //new Model.RoslynErrorModel()
-        //{
-        //    Text = @"""Quaternion"" не содержит определение для ""ID""",
-        //    IsAnalise = true,
-        //    Errors = new List<AbstractFactory>() { new QuatrionIDFactory() }
-        //},
-        //};
 
         public ICommand ChoicePluginCommand { get; private set; }
         public ICommand RoslynPageOpenCommand { get; private set; }
@@ -228,6 +126,24 @@ namespace RustErrorsFix.ViewModel
             Errors = new ObservableCollection<string>(_codeFixManager.GetErrors());
 
             plugin = Regex.Replace(plugin, @"(\[Info\("".*"", "").*("", "".*""\)\])", "/*ПЛАГИН БЫЛ ПОФИКШЕН С ПОМОЩЬЮ ПРОГРАММЫ СКАЧАНОЙ С https://discord.gg/dNGbxafuJn */ $1https://discord.gg/dNGbxafuJn$2");
+
+            plugin += "/* Boosty - https://boosty.to/skulidropek \n" +
+                    "Discord - https://discord.gg/k3hXsVua7Q \n" +
+                    "Discord The Rust Bay - https://discord.gg/Zq3TVjxKWk  */";
+
+            foreach (var roslynError in _configuration.Configuration)
+                roslynError.IsActive = false;
+
+            foreach (var error in Errors)
+            {
+                foreach (var roslynError in _configuration.Configuration)
+                {
+                    if (Regex.IsMatch(error, roslynError.ErrorText))
+                        roslynError.IsActive = true;
+                }
+            }
+
+            OnPropertyChanged(nameof(YourItems));
 
             System.IO.File.WriteAllText(_pluginPath + "FIX.cs", plugin);
         }

@@ -15,18 +15,21 @@ namespace RustErrorsFixLibrary.Core.CodeFixStrategys
         {
             string code = model.ToFullString();
 
-            code = Regex.Replace(code, @"(if\s*\(\s*)?Net.sv.write.Start\(\)\s*\)?", "var nw = Net.sv.StartWrite();");
-            code = Regex.Replace(code, @"Net.sv.write", "nw");
+            code = Regex.Replace(code, @"(if\s*\(\s*)?(Network\.)?Net.sv.write.Start\(\)\s*\)?", "NetWrite nw = Net.sv.StartWrite();");
+
+            code = Regex.Replace(code, @"if\s*\((!)?NetWrite\s*nw\s*=\s*Net.sv.StartWrite\(\);([\r\n\s]*return;)?", "NetWrite nw = Net.sv.StartWrite();");
+            
+            code = Regex.Replace(code, @"(Network\.)?Net.sv.write", "nw");
 
             string output = "";
 
             bool varHave = false;
 
-            foreach (var text in CustomSplit(code, "var"))
+            foreach (var text in CustomSplit(code, "NetWrite"))
             {
                 if(text.Contains("nw = Net.sv.StartWrite();") && !varHave)
                 {
-                    output += "\nvar ";
+                    output += "\nNetWrite ";
                     varHave = true;
                 }
 

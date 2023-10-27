@@ -16,6 +16,9 @@ namespace RustErrorsFixLibrary.Core.CodeFixStrategys
     {
         public override SyntaxNode Fix(SyntaxNode node)
         {
+            if(!(node is MethodDeclarationSyntax))
+                return node;
+            
             var method = node as MethodDeclarationSyntax;
 
             if (method.ReturnType.ToString() == "void") return node;

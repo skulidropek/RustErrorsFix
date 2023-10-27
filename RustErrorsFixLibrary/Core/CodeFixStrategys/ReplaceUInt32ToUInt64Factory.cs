@@ -23,7 +23,11 @@ namespace RustErrorsFixLibrary.Core.CodeFixStrategys
                 SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.ULongKeyword))
                     .WithTriviaFrom(original));
 
-            return updatedRoot;
+            var code = updatedRoot.ToFullString();
+
+            code = code.Replace("UInt32", "UInt64");
+
+            return ToSyntaxNode(code);
         }
     }
 }

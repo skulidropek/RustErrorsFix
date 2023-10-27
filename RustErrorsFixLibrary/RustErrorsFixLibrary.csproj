@@ -46,6 +46,9 @@
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.7.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -70,8 +73,14 @@
     <Reference Include="System.Text.Encoding.CodePages, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encoding.CodePages.7.0.0\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
     </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.7.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -82,10 +91,105 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Abstract\CodeFixStrategy.cs" />
+    <Compile Include="Core\Abstract\CodeFixStrategyGetLine.cs" />
+    <Compile Include="Core\Abstract\CodeFixStrategyParametrStringGetLine.cs" />
+    <Compile Include="Core\Abstract\CodeFixStrategyString.cs" />
+    <Compile Include="Core\Abstract\CodeFixStrategyGPTStringGetLine.cs" />
+    <Compile Include="Core\Abstract\CodeFixStrategyStringGetLine.cs" />
+    <Compile Include="Core\AnalyzerConfiguration.cs" />
+    <Compile Include="Core\Analyzer\OnItemCraftFinishedAnalyzer.cs" />
+    <Compile Include="Core\Analyzer\OnItemCraftCancelledAnalyzer.cs" />
+    <Compile Include="Core\Analyzer\OnPlayerChatAnalyzer.cs" />
+    <Compile Include="Core\Analyzer\OnStructureUpgradeAnalyzer.cs" />
+    <Compile Include="Core\Analyzer\OnCropGatherAnalyzer.cs" />
+    <Compile Include="Core\Analyzer\CanAffordUpgradeAnalyzer.cs" />
+    <Compile Include="Core\Analyzer\CanDeployItemAnalyzer.cs" />
+    <Compile Include="Core\Analyzer\CanMoveItemAnalyzer.cs" />
+    <Compile Include="Core\Analyzer\OnActiveItemChangeAnalyzer.cs" />
+    <Compile Include="Core\Analyzer\OnPlayerInitAnalyzer.cs" />
     <Compile Include="Core\CodeEditor.cs" />
     <Compile Include="Core\CodeFixManager.cs" />
     <Compile Include="Core\CodeFixStrategyConfiguration.cs" />
+    <Compile Include="Core\CodeFixStrategysGPTStringGetLine\TestGPTStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\AutoTurretUpdateAimingParametrStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\ItemContainerBoolParametrStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\ListHashSetToListParametrStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\ulongNetworkableIdParametrStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\AddLinqStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\AddNotTwoAgrumentsStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\ApprovedSkinInfoParametrStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ArrayResizeStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\BaseBoatmyRigidBodyStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\BaseCarToBasicCarStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\BaseHelicopterPatrolHelicopterStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\BaseHelicopterStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\BaseHelicopterVehicleToBaseHelicopterStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\BasePlayerIAmmoContainerStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\BaseProjectileMagazineStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\CanAffordUpgradeReplaceStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\CanDeployItemReplaceStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\CanMoveItemReplaceStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\EntityRefUidStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\EqualsUlongToNetworkabledIdStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\InvalidStatementStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ItemCanMoveToStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ItemContainerFindItemsByItemNameStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\ItemContainerIdToIntParametrStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ItemIdToUlongStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ItemIdulongStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\KeyValuePairBaseNetworkableStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ListHashSetFindToFirtOrDefaultStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ListLengthReplaceCountStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\MinicopterFieldStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\MinicopterWaterSampleStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\MLRSProjectileDistToGravityStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\MotorRowboatdyingStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\NeedEndStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\NetStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\NetworkableIdIntUIntULongNotEqualsStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\NetworkableIdItemIdItemContainerIdEqualsIntParametrStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\NPCPlayerApexReplaceBaseNpcStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\OnActiveItemChangeReplaceStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\OnItemCraftCancelledReplaceStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\OnItemCraftFinishedReplaceStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\OnPlayerChatReplaceStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\OnStructureUpgradeReplaceStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\PatrolHelicopterBaseHelicopterStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\PatrolHelicopterVehicleToPatrolHelicopterStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\PlantEntityReplaceGrowableEntityStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\PlayerInventoryFindItemIDStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\PlayerInventoryFindItemsByItemIDStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\PlayerInventoryFindItemUIDStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\PlayersNearbyJunkPileStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\RelationshipManagerPlayerGangsStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\RemoveDropChanceStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ReplaceUintStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ResearchTableGetBlueprintTemplateStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ResearchTableScrapForResearchStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\stringNetworkableIdStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\SupplyDropParachuteStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\TrainEnginedecayDurationStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\TriggerRadiationradiationSizeStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\ulongRemoveStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ulongStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\UlongToItemContainerIdGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\UlongToItemIdGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\UlongToNetworkabledParametrStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\MiniCopterStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\UlongToUintParametrStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\ulongToStringParametrStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ulongValueStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ulongValueValueStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ValueIntAddStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ValueRemoveStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysStringGetLine\ValueValueRemoveStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysString\AddUsingLinq.cs" />
+    <Compile Include="Core\CodeFixStrategysString\DecayEntityUInt64ToUInt32.cs" />
+    <Compile Include="Core\CodeFixStrategysString\OnPlayerInitReplaceOnPlayerConnectedString.cs" />
+    <Compile Include="Core\CodeFixStrategysString\OnCropGatherReplaceOnGrowableGatheredString.cs" />
+    <Compile Include="Core\CodeFixStrategysString\SandboxRemove.cs" />
     <Compile Include="Core\CodeFixStrategys\DropChanceRecylerRemove.cs" />
+    <Compile Include="Core\CodeFixStrategys\FileSystemBackendCache.cs" />
     <Compile Include="Core\CodeFixStrategys\GetTargetCount.cs" />
     <Compile Include="Core\CodeFixStrategys\DensitySpawnPopulation.cs" />
     <Compile Include="Core\CodeFixStrategys\InstanceToServerInstance.cs" />
@@ -94,8 +198,10 @@
     <Compile Include="Core\CodeFixStrategys\NetSv.cs" />
     <Compile Include="Core\CodeFixStrategys\NPCMurdererToScarecrowNPC.cs" />
     <Compile Include="Core\CodeFixStrategys\HNTPlayerToScientistNPC.cs" />
+    <Compile Include="Core\CodeFixStrategys\RemoveApexUsing.cs" />
     <Compile Include="Core\CodeFixStrategys\ReplaceUintToUlong.cs" />
     <Compile Include="Core\CodeFixStrategys\ReplaceUlongToIDFactory.cs" />
+    <Compile Include="Core\CodeFixStrategys\ScientistToScientistNPC.cs" />
     <Compile Include="Core\CodeFixStrategys\SpawnPopulationFilter.cs" />
     <Compile Include="Core\CodeFixStrategys\SpawnPopulationNotFound.cs" />
     <Compile Include="Core\CodeFixStrategys\CrashCodeFactory.cs" />
@@ -123,12 +229,20 @@
     <Compile Include="Core\Extensions\SyntaxTreeExtensions.cs" />
     <Compile Include="Core\Interface\ICodeEditor.cs" />
     <Compile Include="Core\Interface\ICodeFixManager.cs" />
+    <Compile Include="Core\Log\Debug.cs" />
     <Compile Include="Core\Model\CompilationErrorModel.cs" />
     <Compile Include="Core\Model\CompilationErrorConfigurationModel.cs" />
+    <Compile Include="Core\OpenAI\Choice.cs" />
+    <Compile Include="Core\OpenAI\Message.cs" />
+    <Compile Include="Core\OpenAI\OpenAIAPI.cs" />
+    <Compile Include="Core\OpenAI\Request.cs" />
+    <Compile Include="Core\OpenAI\ResponseData.cs" />
+    <Compile Include="Core\OpenAI\Usage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
