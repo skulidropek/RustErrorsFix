@@ -80,7 +80,6 @@ namespace RustErrorsFix.Roslyn.Managers
             _en = !_en;
 
             Registry.SetValue("Lang", _en ? "En" : "Ru");
-
             OnLangChanged?.Invoke(_en);
         }
 

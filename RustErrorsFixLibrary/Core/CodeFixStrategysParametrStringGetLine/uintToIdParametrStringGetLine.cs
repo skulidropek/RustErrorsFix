@@ -10,21 +10,19 @@ using System.Threading.Tasks;
 
 namespace RustErrorsFixLibrary.Core.CodeFixStrategysParametrStringGetLine
 {
-    internal class ulongNetworkableIdParametrStringGetLine : CodeFixStrategyParametrStringGetLine
+    internal class uintToIdParametrStringGetLine : CodeFixStrategyParametrStringGetLine
     {
-        public ulongNetworkableIdParametrStringGetLine(CodeFixManager codeFixManager) : base(codeFixManager)
+        public uintToIdParametrStringGetLine(CodeFixManager codeFixManager) : base(codeFixManager)
         {
         }
 
         public override string Fix(string code, (int, int) errorLine, string errorLineString, GroupCollection groupCollection)
         {
-            SourceText sourceText = CompilationErrorModel.Location.SourceTree.GetText();
+            SourceText sourceText = CodeFixManager.SyntaxTree.GetText();
 
             string lineText = sourceText.GetSubText(CompilationErrorModel.Location.SourceSpan).ToString();
 
-            var field = Regex.Split(lineText, "==").First();
-
-            return code.Replace(lineText, lineText.Replace(field, field + ".Value"));
+            return code.Replace(lineText, lineText + ".Value");//Regex.Replace(errorLineString, field + @"\s*==\s*([\d\w])+(\s|\)|,)", $"{field} == new {type}($1)$2"));
         }
     }
 }

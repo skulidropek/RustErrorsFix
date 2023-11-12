@@ -150,6 +150,12 @@ namespace RustErrorsFixLibrary
                 .AddScoped<ulongNetworkableIdParametrStringGetLine>()
                 .AddScoped<ItemContainerBoolParametrStringGetLine>()
                 .AddScoped<AutoTurretUpdateAimingParametrStringGetLine>()
+                .AddScoped<BaseProjectileMagazineSwitchAmmoTypesIfNeededParametrStringGetLine>()
+                .AddScoped<DerbisParametrStringGetLine>()
+                .AddScoped<ItemContainerBaseEntityStringGetLine>()
+                .AddScoped<BaseProjectileMagazineTryReloadStringGetLine>()
+                .AddScoped<BaseRidableAnimalInventoryReloadStringGetLine>()
+                .AddScoped<BasePlayerServerInputStringGetLine>()
                 ;
 
             return serviceProvider;

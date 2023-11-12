@@ -16,7 +16,7 @@ namespace RustErrorsFixLibrary.Core.CodeFixStrategysStringGetLine
 
         public override string Fix(string code, (int, int) errorLine, string errorLineString)
         {
-            code = Regex.Replace(code, @"(CanMoveItem\(\s*Item\s[\d\w]+,\s*PlayerInventory\s[\d\w]+,\s*)uint(\s[\d\w]+,\s*int\s[\d\w]+,\s*int\s[\d\w]+\))", "ItemContainerId$2)");
+            code = Regex.Replace(code, @"(CanMoveItem\(\s*Item\s[\d\w]+,\s*PlayerInventory\s[\d\w]+,\s*)uint(\s[\d\w]+,\s*int\s[\d\w]+,\s*int\s[\d\w]+\))", "$1ItemContainerId$2");
             return code;
         }
     }

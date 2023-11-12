@@ -72,12 +72,12 @@ namespace RustErrorsFixLibrary.Core
                 FixStrategies = new List<Type>() { typeof(CanMoveItemFactory),  typeof(UInt64ToNetworkabledIdFactory) }
             },
             //typeof(ReplaceUidToUidValueFactory),
-            new CompilationErrorConfigurationModel()
-            {
-                ErrorText = @"""=="" невозможно применить к операнду типа ""(NetworkableId|ItemId|ItemContainerId)"" и ""(uint|ulong)""",
-                RequiresAnalysis = true,
-                FixStrategies = new List<Type>() { typeof(CanMoveItemFactory), typeof(ReplaceUidToUidValueFactory), typeof(UInt64ToNetworkabledIdFactory) }
-            },
+            //new CompilationErrorConfigurationModel()
+            //{
+            //    ErrorText = @"""=="" невозможно применить к операнду типа ""(NetworkableId|ItemId|ItemContainerId)"" и ""(uint|ulong)""",
+            //    RequiresAnalysis = true,
+            //    FixStrategies = new List<Type>() { typeof(CanMoveItemFactory), typeof(ReplaceUidToUidValueFactory), typeof(UInt64ToNetworkabledIdFactory) }
+            //},
             new CompilationErrorConfigurationModel()
             {
                 ErrorText = @".е удается (неявно )?преобразовать (тип|из) ""(NetworkableId|ItemId|ItemContainerId)"" в ""(uint|ulong)""",
@@ -768,6 +768,48 @@ namespace RustErrorsFixLibrary.Core
                 RequiresAnalysis = true,
                 FixStrategies = new List<Type>() { typeof(AutoTurretUpdateAimingParametrStringGetLine) }
             }, 
+            new CompilationErrorConfigurationModel()
+            {
+                ErrorText = @"""BaseProjectile.Magazine"" не содержит определения ""SwitchAmmoTypesIfNeeded"", и не удалось найти доступный метод расширения",
+                RequiresAnalysis = true,
+                FixStrategies = new List<Type>() { typeof(BaseProjectileMagazineSwitchAmmoTypesIfNeededParametrStringGetLine) }
+            },  
+            new CompilationErrorConfigurationModel()
+            {
+                ErrorText = @"""Layer"" не содержит определение для ""Debris""",
+                RequiresAnalysis = true,
+                FixStrategies = new List<Type>() { typeof(DerbisParametrStringGetLine) }
+            }, 
+            new CompilationErrorConfigurationModel()
+            {
+                ErrorText = @"не удается преобразовать из ""ItemContainer"" в ""BaseEntity""",
+                RequiresAnalysis = true,
+                FixStrategies = new List<Type>() { typeof(ItemContainerBaseEntityStringGetLine) }
+            },  
+            new CompilationErrorConfigurationModel()
+            {
+                ErrorText = @"""BaseProjectile.Magazine"" не содержит определения ""TryReload"", и не удалось найти доступный метод расширения",
+                RequiresAnalysis = true,
+                FixStrategies = new List<Type>() { typeof(BaseProjectileMagazineTryReloadStringGetLine) }
+            },  
+            new CompilationErrorConfigurationModel()
+            {
+                ErrorText = @"""=="" невозможно применить к операнду типа ""(uint|ulong)"" и ""(NetworkableId|ItemId|ItemContainerId)""",
+                RequiresAnalysis = true,
+                FixStrategies = new List<Type>() { typeof(BaseProjectileMagazineTryReloadStringGetLine) }
+            },  
+            new CompilationErrorConfigurationModel()
+            {
+                ErrorText = @"""BaseRidableAnimal"" не содержит определения ""inventory"", и не удалось найти доступный метод расширения",
+                RequiresAnalysis = true,
+                FixStrategies = new List<Type>() { typeof(BaseRidableAnimalInventoryReloadStringGetLine) }
+            }, 
+            new CompilationErrorConfigurationModel()
+            {
+                ErrorText = @"Невозможно присвоить значение свойству или индексатору ""BasePlayer.serverInput"" — доступ только для чтения",
+                RequiresAnalysis = true,
+                FixStrategies = new List<Type>() { typeof(BasePlayerServerInputStringGetLine) }
+            },  
         };
     }
 }

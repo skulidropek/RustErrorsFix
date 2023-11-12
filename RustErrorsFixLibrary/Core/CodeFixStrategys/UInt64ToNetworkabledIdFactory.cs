@@ -32,7 +32,6 @@ namespace RustErrorsFixLibrary.Core.CodeFixStrategys
                 (@".inventory.uid", "ItemContainerId"),
             };
 
-
             foreach (Match match in Regex.Matches(code, @"FileStorage.server.RemoveEntityNum\(((?!new)[^,)]+)"))
             {
                 var group1 = match.Groups[1].ToString();

@@ -11,8 +11,8 @@
     <StackPanel Width="600" VerticalAlignment="Center" HorizontalAlignment="Center">
         <TextBlock FontWeight="Bold" FontSize="50" HorizontalAlignment="Center" Text="{Binding Path=SelectPluginText}" />
         <Border Width="381" HorizontalAlignment="Center" Margin="0 0 0 30" BorderThickness="0 0 0 1" BorderBrush="#72c0fe" />
-        <Button Content="{Binding Path=ChoiceButtonText}" Style="{StaticResource BtnGradientBlue}" Command="{Binding Path=ChoicePluginCommand}" />
-        <Button Margin="0 30 0 0" Content="{Binding Path=RoslynButtonText}" Style="{StaticResource BtnGradientBlue}" Command="{Binding Path=RoslynPageOpenCommand}" />
+       <!-- <Button Content="{Binding Path=ChoiceButtonText}" Style="{StaticResource BtnGradientBlue}" Command="{Binding Path=ChoicePluginCommand}" /> -->
+        <Button Content="{Binding Path=RoslynButtonText}" Style="{StaticResource BtnGradientBlue}" Command="{Binding Path=RoslynPageOpenCommand}" />
         <Button Margin="0 30 0 0" Content="Reset Managed Folder" Command="{Binding Path=ResetManagedFolderCommand}" Style="{StaticResource BtnGradientBlue}" />
     </StackPanel>
 
