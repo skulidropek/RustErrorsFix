@@ -792,12 +792,12 @@ namespace RustErrorsFixLibrary.Core
                 RequiresAnalysis = true,
                 FixStrategies = new List<Type>() { typeof(BaseProjectileMagazineTryReloadStringGetLine) }
             },  
-            new CompilationErrorConfigurationModel()
-            {
-                ErrorText = @"""=="" невозможно применить к операнду типа ""(uint|ulong)"" и ""(NetworkableId|ItemId|ItemContainerId)""",
-                RequiresAnalysis = true,
-                FixStrategies = new List<Type>() { typeof(BaseProjectileMagazineTryReloadStringGetLine) }
-            },  
+            //new CompilationErrorConfigurationModel()
+            //{
+            //    ErrorText = @"""=="" невозможно применить к операнду типа ""(uint|ulong)"" и ""(NetworkableId|ItemId|ItemContainerId)""",
+            //    RequiresAnalysis = true,
+            //    FixStrategies = new List<Type>() { typeof(BaseProjectileMagazineTryReloadStringGetLine) }
+            //},  
             new CompilationErrorConfigurationModel()
             {
                 ErrorText = @"""BaseRidableAnimal"" не содержит определения ""inventory"", и не удалось найти доступный метод расширения",
