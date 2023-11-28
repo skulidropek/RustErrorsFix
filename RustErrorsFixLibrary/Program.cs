@@ -156,6 +156,8 @@ namespace RustErrorsFixLibrary
                 .AddScoped<BaseProjectileMagazineTryReloadStringGetLine>()
                 .AddScoped<BaseRidableAnimalInventoryReloadStringGetLine>()
                 .AddScoped<BasePlayerServerInputStringGetLine>()
+                .AddScoped<BaseMountableTryFireProjectileStringGetLine>()
+                .AddScoped<GetGradeStringGetLine>()
                 ;
 
             return serviceProvider;

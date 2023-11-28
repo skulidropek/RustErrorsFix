@@ -75,4 +75,7 @@
 	  <ProjectReference Include="..\RustErrorsFixLibrary\RustErrorsFixLibrary.csproj" />
 	</ItemGroup>
 
+	<PropertyGroup>
+		<PreferredUILang>ru-RU</PreferredUILang>
+	</PropertyGroup>
 </Project>

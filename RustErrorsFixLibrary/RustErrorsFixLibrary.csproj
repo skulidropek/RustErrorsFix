@@ -112,11 +112,13 @@
     <Compile Include="Core\CodeFixStrategyConfiguration.cs" />
     <Compile Include="Core\CodeFixStrategysGPTStringGetLine\TestGPTStringGetLine.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\AutoTurretUpdateAimingParametrStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\BaseMountableTryFireProjectileStringGetLine.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\BasePlayerServerInputStringGetLine.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\BaseProjectileMagazineSwitchAmmoTypesIfNeededParametrStringGetLine.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\BaseProjectileMagazineTryReloadStringGetLine.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\BaseRidableAnimalInventoryReloadStringGetLine.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\DerbisParametrStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\GetGradeStringGetLine.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\ItemContainerBaseEntityStringGetLine.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\ItemContainerBoolParametrStringGetLine.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\ListHashSetToListParametrStringGetLine.cs" />
@@ -251,9 +253,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\Log\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />

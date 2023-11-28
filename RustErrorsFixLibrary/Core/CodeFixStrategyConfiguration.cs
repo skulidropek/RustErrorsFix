@@ -809,6 +809,18 @@ namespace RustErrorsFixLibrary.Core
                 ErrorText = @"Невозможно присвоить значение свойству или индексатору ""BasePlayer.serverInput"" — доступ только для чтения",
                 RequiresAnalysis = true,
                 FixStrategies = new List<Type>() { typeof(BasePlayerServerInputStringGetLine) }
+            }, 
+            new CompilationErrorConfigurationModel()
+            {
+                ErrorText = @"Для нестатического поля, метода или свойства ""BaseMountable.TryFireProjectile\(StorageContainer, AmmoTypes, Vector3, Vector3, BasePlayer, float, float, out ServerProjectile\)""",
+                RequiresAnalysis = true,
+                FixStrategies = new List<Type>() { typeof(BaseMountableTryFireProjectileStringGetLine) }
+            },    
+            new CompilationErrorConfigurationModel()
+            {
+                ErrorText = @"Ни одна из перегрузок метода ""GetGrade"" не принимает 3 аргументов",
+                RequiresAnalysis = true,
+                FixStrategies = new List<Type>() { typeof(GetGradeStringGetLine) }
             },  
         };
     }
