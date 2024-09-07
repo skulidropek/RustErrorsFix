@@ -31,6 +31,12 @@ namespace RustErrorsFixLibrary.Core.CodeFixStrategys
             {
                 var taskName = Regex.Match(code, @"ItemCraftTask ([^,^)]+)").Groups[1].ToString();
                 code = Regex.Replace(code, $@"{taskName}()\??.owner", "itemCrafterOwner.owner");
+
+                if (code.Contains("player"))
+                {
+                    code = code.Replace("player", "itemCrafterOwner.baseEntity");
+                }
+                
             }
 
             return ToSyntaxNode(code);

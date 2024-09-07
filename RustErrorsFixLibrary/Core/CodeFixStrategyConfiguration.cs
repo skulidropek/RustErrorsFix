@@ -821,6 +821,18 @@ namespace RustErrorsFixLibrary.Core
                 ErrorText = @"Ни одна из перегрузок метода ""GetGrade"" не принимает 3 аргументов",
                 RequiresAnalysis = true,
                 FixStrategies = new List<Type>() { typeof(GetGradeStringGetLine) }
+            },   
+            new CompilationErrorConfigurationModel()
+            {
+                ErrorText = @"""BasePlayer"" не содержит определения ""(sv.+)"", и не удалось найти доступный метод расширения",
+                RequiresAnalysis = true,
+                FixStrategies = new List<Type>() { typeof(svActiveIte) }
+            }, 
+            new CompilationErrorConfigurationModel()
+            {
+                ErrorText = @"""int"" не содержит определения ""Value"", и не удалось найти доступный метод расширения",
+                RequiresAnalysis = true,
+                FixStrategies = new List<Type>() { typeof(intRemoveValue) }
             },  
         };
     }

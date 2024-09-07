@@ -158,6 +158,8 @@ namespace RustErrorsFixLibrary
                 .AddScoped<BasePlayerServerInputStringGetLine>()
                 .AddScoped<BaseMountableTryFireProjectileStringGetLine>()
                 .AddScoped<GetGradeStringGetLine>()
+                .AddScoped<svActiveIte>()
+                .AddScoped<intRemoveValue>()
                 ;
 
             return serviceProvider;

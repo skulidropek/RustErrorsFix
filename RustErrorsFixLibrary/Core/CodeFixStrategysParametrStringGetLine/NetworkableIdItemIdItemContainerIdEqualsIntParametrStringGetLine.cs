@@ -21,6 +21,11 @@ namespace RustErrorsFixLibrary.Core.CodeFixStrategysStringGetLine
 
             string lineText = sourceText.GetSubText(CompilationErrorModel.Location.SourceSpan).ToString();
 
+            if (lineText.Contains("svActiveItemID"))
+            {
+                return code.Replace(lineText, lineText.Replace("svActiveItemID", "svActiveItemID.Value"));
+            }
+
             return code.Replace(lineText, lineText + ".Value");//Regex.Replace(errorLineString, field + @"\s*==\s*([\d\w])+(\s|\)|,)", $"{field} == new {type}($1)$2"));
         }
     }

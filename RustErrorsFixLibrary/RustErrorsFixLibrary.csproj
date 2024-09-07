@@ -119,9 +119,11 @@
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\BaseRidableAnimalInventoryReloadStringGetLine.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\DerbisParametrStringGetLine.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\GetGradeStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\intRemoveValue.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\ItemContainerBaseEntityStringGetLine.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\ItemContainerBoolParametrStringGetLine.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\ListHashSetToListParametrStringGetLine.cs" />
+    <Compile Include="Core\CodeFixStrategysParametrStringGetLine\svActiveIte.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\uintToIdParametrStringGetLine.cs" />
     <Compile Include="Core\CodeFixStrategysParametrStringGetLine\ulongNetworkableIdParametrStringGetLine.cs" />
     <Compile Include="Core\CodeFixStrategysStringGetLine\AddLinqStringGetLine.cs" />
